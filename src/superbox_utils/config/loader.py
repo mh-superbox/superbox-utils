@@ -3,13 +3,25 @@ from dataclasses import dataclass
 from dataclasses import is_dataclass
 from pathlib import Path
 from typing import Any
+from typing import NamedTuple
 
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.yaml.loader import yaml_loader_safe
 
 
+class RegexValidation(NamedTuple):
+    regex: str
+    error: str
+
+
+class Validation:
+    ALLOWED_CHARACTERS: RegexValidation = RegexValidation(
+        regex=r"^[a-z\d_-]*$", error="The following characters are prohibited: a-z 0-9 -_"
+    )
+
+
 @dataclass
-class ConfigMixin:
+class ConfigLoaderMixin:
     def update(self, new):
         for key, value in new.items():
             if hasattr(self, key):

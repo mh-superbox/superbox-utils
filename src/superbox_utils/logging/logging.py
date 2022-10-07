@@ -6,14 +6,14 @@ from typing import Final
 
 LOG_LEVEL: Final[Dict[str, int]] = OrderedDict(
     {
-        "debug": logging.DEBUG,
-        "info": logging.INFO,
-        "warning": logging.WARNING,
         "error": logging.ERROR,
+        "warning": logging.WARNING,
+        "info": logging.INFO,
+        "debug": logging.DEBUG,
     }
 )
 
-stream_handler = logging.StreamHandler(stream=sys.stderr)
+stream_handler: logging.StreamHandler = logging.StreamHandler(stream=sys.stderr)
 stream_handler.setFormatter(logging.Formatter(fmt="%(levelname)s | %(message)s"))
 
 
