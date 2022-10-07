@@ -4,6 +4,7 @@ from dataclasses import is_dataclass
 from pathlib import Path
 from typing import Any
 from typing import NamedTuple
+from typing import Union
 
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.yaml.loader import yaml_loader_safe
@@ -35,12 +36,11 @@ class ConfigLoaderMixin:
         self.validate()
 
     def update_from_yaml_file(self, config_path: Path):
-        _config: dict = {}
-
         if config_path.exists():
-            _config = yaml_loader_safe(config_path)
+            yaml_data: Union[dict, list] = yaml_loader_safe(config_path)
 
-        self.update(_config)
+            if isinstance(yaml_data, dict):
+                self.update(yaml_data)
 
     def validate(self):
         for f in dataclasses.fields(self):
