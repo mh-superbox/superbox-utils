@@ -2,7 +2,7 @@ import pytest
 from superbox_utils.mqtt.config import MqttConfig
 
 
-class TestHappyMqttConfig:
+class TestHappyConfig:
     @pytest.mark.parametrize(
         "config, expected_mqtt_host, expected_mqtt_port, expected_keepalive, expected_retry_limit, expected_reconnect_interval",
         [
@@ -16,7 +16,7 @@ class TestHappyMqttConfig:
             ),
         ],
     )
-    def test_home_assistant_config(
+    def test_mqtt_config(
         self,
         config: dict,
         expected_mqtt_host: str,

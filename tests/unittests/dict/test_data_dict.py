@@ -1,7 +1,7 @@
 from superbox_utils.dict.data_dict import DataDict
 
 
-class TestHappyPathDict:
+class TestHappyPathDataDict:
     def test_data_dict(self):
         data_dict: DataDict = DataDict()
 
