@@ -3,7 +3,7 @@ from superbox_utils.config.exception import ConfigException
 from superbox_utils.hass.config import HomeAssistantConfig
 
 
-class TestHappyMqttConfig:
+class TestHappyConfig:
     @pytest.mark.parametrize(
         "config, expected_enabled, expected_discovery_prefix",
         [
@@ -30,7 +30,7 @@ class TestHappyMqttConfig:
         assert expected_discovery_prefix == home_assistant_config.discovery_prefix
 
 
-class TestUnhappyMqttConfig:
+class TestUnhappyConfig:
     @pytest.mark.parametrize(
         "config, expected_log",
         [
