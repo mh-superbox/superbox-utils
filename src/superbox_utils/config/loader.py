@@ -17,7 +17,7 @@ class RegexValidation(NamedTuple):
 
 class Validation:
     ALLOWED_CHARACTERS: RegexValidation = RegexValidation(
-        regex=r"^[a-z\d_-]*$", error="The following characters are prohibited: a-z 0-9 -_"
+        regex=r"^[A-Za-z\d_-]*$", error="The following characters are prohibited: a-z 0-9 -_"
     )
 
 

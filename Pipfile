@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 pyyaml = "~=6.0"
+asyncio-mqtt = "~=0.12.1"
 
 [dev-packages]
 black = "*"
