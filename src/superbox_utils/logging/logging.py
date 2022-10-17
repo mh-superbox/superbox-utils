@@ -1,5 +1,4 @@
 import logging
-import sys
 from collections import OrderedDict
 from typing import Dict
 from typing import Final
@@ -16,7 +15,7 @@ LOG_LEVEL: Final[Dict[str, int]] = OrderedDict(
     }
 )
 
-stream_handler: logging.StreamHandler = logging.StreamHandler(stream=sys.stderr)
+stream_handler: logging.StreamHandler = logging.StreamHandler()
 
 
 def init_logger(name: str, level: str, handlers: list, fmt: Optional[str] = None) -> logging.Logger:
@@ -28,6 +27,7 @@ def init_logger(name: str, level: str, handlers: list, fmt: Optional[str] = None
 
     for handler in handlers:
         handler.setFormatter(logging.Formatter(fmt))
+        handler.setLevel(LOG_LEVEL[level.lower()])
         logger.addHandler(handler)
 
     return logger
