@@ -1,4 +1,5 @@
 import pytest
+
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.logging.config import LoggingConfig
 
@@ -35,7 +36,7 @@ class TestUnHappyLoggingConfig:
         [
             (
                 {"level": "invalid"},
-                "Invalid log level 'invalid'. The following log levels are allowed: error warning info debug.",
+                "[LOGGING] Invalid log level 'invalid'. The following log levels are allowed: error warning info debug.",
             ),
         ],
     )
