@@ -30,7 +30,7 @@ class LoggingConfig(ConfigLoaderMixin):
 
         if value not in LOG_LEVEL.keys():
             raise ConfigException(
-                f"Invalid log level '{self.level}'. The following log levels are allowed: {' '.join(LOG_LEVEL.keys())}."
+                f"[{self.__class__.__name__.replace('Config', '').upper()}] Invalid log level '{self.level}'. The following log levels are allowed: {' '.join(LOG_LEVEL.keys())}."
             )
 
         return value
