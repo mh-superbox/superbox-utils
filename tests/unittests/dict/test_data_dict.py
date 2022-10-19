@@ -7,11 +7,11 @@ class TestHappyPathDataDict:
 
         data_dict["key"] = "value"
 
-        assert "value" == data_dict["key"]
-        assert 1 == len(data_dict)
-        assert ["key"] == [d for d in data_dict]
-        assert "DataDict({'key': 'value'})" == str(data_dict)
+        assert data_dict["key"] == "value"
+        assert len(data_dict) == 1
+        assert ["key"] == list(data_dict)
+        assert str(data_dict) == "DataDict({'key': 'value'})"
 
         del data_dict["key"]
 
-        assert 0 == len(data_dict)
+        assert len(data_dict) == 0
