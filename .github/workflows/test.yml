@@ -40,7 +40,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ github.workspace }}/.venv
-          key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+          key: python-${{ matrix.python-version }}-pipenv
 
 #      - name: Archive virtualenv artifacts
 #        uses: actions/upload-artifact@v3
@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: pytest-results-${{ matrix.python-version }}
-          path: junit/test-results-${{ matrix.python-version }}.xml
+          path: junit/test-results.xml
         if: ${{ always() }}
   security:
     name: Security - Linux Python ${{ matrix.python-version }}
@@ -73,6 +73,11 @@ jobs:
           - '3.9'
           - '3.10'
     steps:
+      - name: Cache virtualenv
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/.venv
+          key: python-${{ matrix.python-version }}-pipenv
       - name: Audit packages
         run: pipenv run pip-audit
   check:
@@ -87,6 +92,11 @@ jobs:
           - '3.9'
           - '3.10'
     steps:
+      - name: Cache virtualenv
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/.venv
+          key: python-${{ matrix.python-version }}-pipenv
       - name: Check code format with black
         run: pipenv run black --diff --check $(git ls-files '*.py')
       - name: Lint with flake8
