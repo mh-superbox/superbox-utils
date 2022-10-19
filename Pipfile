@@ -9,15 +9,19 @@ asyncio-mqtt = "~=0.12.1"
 
 [dev-packages]
 black = "*"
-mypy = "*"
 check-manifest = "*"
+coverage-badge = "*"
 flake8 = "*"
+flake8-comprehensions = "*"
 flake8-docstrings = "*"
-pre-commit = "*"
-types-pyyaml = "*"
+flake8-noqa = "*"
+mypy = "*"
+pylint = "*"
+pip-audit = "*"
 pytest = "*"
 pytest-cov = "*"
-coverage-badge = "*"
+types-pyyaml = "*"
+yamllint = "*"
 
 [requires]
 python_version = "3.8"

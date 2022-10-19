@@ -1,6 +1,7 @@
 import logging
 
 import pytest
+
 from superbox_utils.logging import init_logger
 from superbox_utils.logging import stream_handler
 
@@ -18,6 +19,6 @@ class TestHappyPathLogging:
     def test_init_logger(self, log_level: str, expected: int):
         logger: logging.Logger = init_logger(name="test-logger", level=log_level, handlers=[stream_handler])
 
-        assert expected == logger.level
-        assert "test-logger" == logger.name
+        assert logger.level == expected
+        assert logger.name == "test-logger"
         assert isinstance(logger.handlers[0], logging.StreamHandler)

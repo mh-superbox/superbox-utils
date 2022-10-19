@@ -6,19 +6,18 @@ from superbox_utils.logging.config import LoggingConfig
 
 class TestHappyLoggingConfig:
     @pytest.mark.parametrize(
-        "config, expected_level, expected_verbose",
+        "config, expected",
         [
-            ({"level": "error"}, "error", 0),
-            ({"level": "warning"}, "warning", 1),
-            ({"level": "info"}, "info", 2),
-            ({"level": "debug"}, "debug", 3),
+            ({"level": "error"}, {"level": "error", "verbose": 0}),
+            ({"level": "warning"}, {"level": "warning", "verbose": 1}),
+            ({"level": "info"}, {"level": "info", "verbose": 2}),
+            ({"level": "debug"}, {"level": "debug", "verbose": 3}),
         ],
     )
     def test_logging_config(
         self,
         config: dict,
-        expected_level: str,
-        expected_verbose: int,
+        expected: dict,
     ):
         logging_config = LoggingConfig()
         logging_config.update(config)
@@ -26,13 +25,13 @@ class TestHappyLoggingConfig:
 
         assert isinstance(logging_config.level, str)
 
-        assert expected_level == logging_config.level
-        assert expected_verbose == logging_config.verbose
+        assert logging_config.level == expected["level"]
+        assert logging_config.verbose == expected["verbose"]
 
 
 class TestUnHappyLoggingConfig:
     @pytest.mark.parametrize(
-        "config, expected_log",
+        "config, expected",
         [
             (
                 {"level": "invalid"},
@@ -43,11 +42,11 @@ class TestUnHappyLoggingConfig:
     def test_logging_config(
         self,
         config: dict,
-        expected_log: str,
+        expected: str,
     ):
         with pytest.raises(ConfigException) as error:
             logging_config = LoggingConfig()
             logging_config.update(config)
             logging_config.update_level(name="test-logger")
 
-        assert expected_log == str(error.value)
+        assert str(error.value) == expected

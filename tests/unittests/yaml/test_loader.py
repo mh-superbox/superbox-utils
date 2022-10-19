@@ -2,9 +2,9 @@ from pathlib import Path
 from typing import Union
 
 import pytest
+
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.yaml.loader import yaml_loader_safe
-
 from unittests.yaml.test_loader_data import INVALID_YAML
 from unittests.yaml.test_loader_data import VALID_YAML
 
@@ -26,7 +26,7 @@ class TestHappyPathLoader:
 
 class TestUnHappyPathLoader:
     @pytest.mark.parametrize(
-        "content_to_file, expected_log",
+        "content_to_file, expected",
         [
             (
                 ("test.yaml", INVALID_YAML),
@@ -35,8 +35,8 @@ class TestUnHappyPathLoader:
         ],
         indirect=["content_to_file"],
     )
-    def test_yaml_loader_safe(self, content_to_file: Path, expected_log: str):
+    def test_yaml_loader_safe(self, content_to_file: Path, expected: str):
         with pytest.raises(ConfigException) as error:
             yaml_loader_safe(content_to_file)
 
-        assert expected_log == str(error.value)
+        assert str(error.value) == expected

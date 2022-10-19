@@ -1,24 +1,23 @@
 import pytest
+
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.hass.config import HomeAssistantConfig
 
 
 class TestHappyConfig:
     @pytest.mark.parametrize(
-        "config, expected_enabled, expected_discovery_prefix",
+        "config, expected",
         [
             (
                 {"enabled": True, "discovery_prefix": "mocked-discovery-prefix"},
-                True,
-                "mocked-discovery-prefix",
+                {"enabled": True, "discovery_prefix": "mocked-discovery-prefix"},
             ),
         ],
     )
     def test_home_assistant_config(
         self,
         config: dict,
-        expected_enabled: bool,
-        expected_discovery_prefix: str,
+        expected: dict,
     ):
         home_assistant_config = HomeAssistantConfig()
         home_assistant_config.update(config)
@@ -26,13 +25,13 @@ class TestHappyConfig:
         assert isinstance(home_assistant_config.enabled, bool)
         assert isinstance(home_assistant_config.discovery_prefix, str)
 
-        assert expected_enabled == home_assistant_config.enabled
-        assert expected_discovery_prefix == home_assistant_config.discovery_prefix
+        assert home_assistant_config.enabled == expected["enabled"]
+        assert home_assistant_config.discovery_prefix == expected["discovery_prefix"]
 
 
 class TestUnhappyConfig:
     @pytest.mark.parametrize(
-        "config, expected_log",
+        "config, expected",
         [
             (
                 {"enabled": True, "discovery_prefix": "invalid discovery prefix"},
@@ -43,10 +42,10 @@ class TestUnhappyConfig:
     def test_home_assistant_config(
         self,
         config: dict,
-        expected_log: str,
+        expected: str,
     ):
         with pytest.raises(ConfigException) as error:
             home_assistant_config = HomeAssistantConfig()
             home_assistant_config.update(config)
 
-        assert expected_log == str(error.value)
+        assert str(error.value) == expected

@@ -25,10 +25,8 @@ class LoggingConfig(ConfigLoaderMixin):
 
         logger.setLevel(level)
 
-    def _validate_level(self, value: str, f: dataclasses.Field) -> str:
-        value = value.lower()
-
-        if value not in LOG_LEVEL.keys():
+    def _validate_level(self, value: str, _field: dataclasses.Field) -> str:
+        if (value := value.lower()) not in LOG_LEVEL.keys():
             raise ConfigException(
                 f"[{self.__class__.__name__.replace('Config', '').upper()}] Invalid log level '{self.level}'. The following log levels are allowed: {' '.join(LOG_LEVEL.keys())}."
             )

@@ -43,14 +43,14 @@ class ConfigLoaderMixin:
                 self.update(yaml_data)
 
     def validate(self):
-        for f in dataclasses.fields(self):
-            value: Any = getattr(self, f.name)
+        for _field in dataclasses.fields(self):
+            value: Any = getattr(self, _field.name)
 
             if is_dataclass(value):
                 value.validate()
             else:
-                if method := getattr(self, f"_validate_{f.name}", None):
-                    setattr(self, f.name, method(getattr(self, f.name), f=f))
+                if method := getattr(self, f"_validate_{_field.name}", None):
+                    setattr(self, _field.name, method(getattr(self, _field.name), _field=_field))
 
-                if not isinstance(value, f.type) and not is_dataclass(value):
-                    raise ConfigException(f"Expected {f.name} to be {f.type}, got {repr(value)}")
+                if not isinstance(value, _field.type) and not is_dataclass(value):
+                    raise ConfigException(f"Expected {_field.name} to be {_field.type}, got {repr(value)}")
