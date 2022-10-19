@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Test - ${{ runner.os }} Python ${{ matrix.python-version }}
+    name: Test - Linux Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: False
@@ -56,7 +56,7 @@ jobs:
           path: junit/test-results-${{ matrix.python-version }}.xml
         if: ${{ always() }}
   security:
-    name: Security - ${{ runner.os }} Python ${{ matrix.python-version }}
+    name: Security - Linux Python ${{ matrix.python-version }}
     continue-on-error: True
     runs-on: ubuntu-latest
     strategy:
@@ -70,7 +70,7 @@ jobs:
       - name: Audit packages
         run: pipenv run pip-audit
   check:
-    name: Check - ${{ runner.os }} Python ${{ matrix.python-version }}
+    name: Check - Linux Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: False
@@ -89,7 +89,7 @@ jobs:
       - name: Lint with pylint
         run: pipenv run pylint $(git ls-files '*.py')
   coverage:
-    name: Coverage - ${{ runner.os }} Python 3.8
+    name: Coverage - Linux Python 3.8
     runs-on: ubuntu-latest
     needs:
       - test
