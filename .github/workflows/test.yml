@@ -34,8 +34,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ~/.cache/pip
-            ~/.cache/pipenv
+            .cache/pip
+            .cache/pipenv
             .venv
           key: python-${{ matrix.python-version }}-pipenv
       - name: Install pipenv
@@ -68,10 +68,8 @@ jobs:
         if: ${{ always() }}
       - name: Info
         run: |
-          pwd
-          echo ${{ github.workspace }}
-          ls ~/.cache
-          ls .venv
+          echo "CACHE" && ls .cache
+          echo "VENV" && ls .venv
   security:
     name: Security - Linux Python ${{ matrix.python-version }}
     needs:
@@ -90,10 +88,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ~/.cache/pip
-            ~/.cache/pipenv
+            .cache/pip
+            .cache/pipenv
             .venv
           key: python-${{ matrix.python-version }}-pipenv
+      - name: Info
+        run: |
+          echo "CACHE" && ls .cache
+          echo "VENV" && ls .venv
       - name: Audit packages
         run: pipenv run pip-audit
   check:
@@ -113,8 +115,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ~/.cache/pip
-            ~/.cache/pipenv
+            .cache/pip
+            .cache/pipenv
             .venv
           key: python-${{ matrix.python-version }}-pipenv
       - name: Check code format with black
