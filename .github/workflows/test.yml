@@ -17,6 +17,14 @@ jobs:
           - '3.9'
           - '3.10'
     steps:
+      - name: Cache virtualenv
+        id: cache-virtualenv
+        uses: actions/cache@v3
+        with:
+          path: |
+            .local
+            .venv
+          key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -38,21 +46,18 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: python-${{ matrix.python-version }}-coverage
-          path: ${{ github.workspace }}/.coverage
+          path: .coverage
       - name: Upload pytest test results
         uses: actions/upload-artifact@v3
         with:
           name: pytest-results-${{ matrix.python-version }}
           path: junit/test-results.xml
         if: ${{ always() }}
-      - name: Cache virtualenv
-        id: cache-virtualenv
-        uses: actions/cache@v3
-        with:
-          path: |
-            .local
-            .venv
-          key: python-${{ matrix.python-version }}-pipenv
+      - name: Info
+        run: |
+          echo ${{ github.workspace }}
+          ls ${{ github.workspace }}/.local
+          ls ${{ github.workspace }}/.venv
   security:
     name: Security - Linux Python ${{ matrix.python-version }}
     needs:
@@ -73,7 +78,7 @@ jobs:
           path: |
             .local
             .venv
-          key: python-${{ matrix.python-version }}-pipenv
+          key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
       - name: Audit packages
         run: pipenv run pip-audit
   check:
@@ -95,7 +100,7 @@ jobs:
           path: |
             .local
             .venv
-          key: python-${{ matrix.python-version }}-pipenv
+          key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
       - name: Check code format with black
         run: pipenv run black --diff --check $(git ls-files '*.py')
       - name: Lint with flake8
