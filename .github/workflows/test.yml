@@ -26,6 +26,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
+        env:
+          PYTHONUSERBASE: $GITHUB_WORKSPACE/.local
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -36,14 +38,16 @@ jobs:
           path: |
             .cache/pip
             .cache/pipenv
+            .local
             .venv
-          key: python-${{ matrix.python-version }}-pipenv
+          key: python-${{ matrix.python-version }}-$GITHUB_JOB
       - name: Install pipenv
 #        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         env:
           PIP_CACHE_DIR: $GITHUB_WORKSPACE/.cache/pip
         run: |
-          # [[ ! -d .local ]] && mkdir .local
+          [[ ! -d .local ]] && mkdir .local
+          echo "$GITHUB_WORKSPACE/.local/bin" >> $GITHUB_PATH
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
@@ -70,6 +74,7 @@ jobs:
         run: |
           echo "CACHE" && ls .cache
           echo "VENV" && ls .venv
+          echo "LOCAL" && ls .local/bin
   security:
     name: Security - Linux Python ${{ matrix.python-version }}
     needs:
@@ -90,14 +95,18 @@ jobs:
           path: |
             .cache/pip
             .cache/pipenv
+            .local
             .venv
-          key: python-${{ matrix.python-version }}-pipenv
+          key: python-${{ matrix.python-version }}-$GITHUB_JOB
       - name: Info
         run: |
           echo "CACHE" && ls .cache
           echo "VENV" && ls .venv/bin
+          echo "LOCAL" && ls .local/bin
       - name: Audit packages
-        run: pipenv run pip-audit
+        run: |
+          echo "$GITHUB_WORKSPACE/.local/bin" >> $GITHUB_PATH
+          pipenv run pip-audit
   check:
     name: Check - Linux Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
@@ -117,8 +126,9 @@ jobs:
           path: |
             .cache/pip
             .cache/pipenv
+            .local
             .venv
-          key: python-${{ matrix.python-version }}-pipenv
+          key: python-${{ matrix.python-version }}-$GITHUB_JOB
       - name: Check code format with black
         run: |
           pipenv run black --version
