@@ -6,11 +6,11 @@ on:
       - develop
       - main
 
-env:
-  PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
-  PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
-  PYTHONUSERBASE: ${{ github.workspace }}/.local
-  PATH: "$PATH:${{ github.workspace }}/.local/bin"
+#env:
+#  PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
+#  PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
+#  PYTHONUSERBASE: ${{ github.workspace }}/.local
+#  PATH: "$PATH:${{ github.workspace }}/.local/bin"
 
 jobs:
   test:
@@ -32,7 +32,7 @@ jobs:
       - name: Install pipenv
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: |
-          [[ ! -d .local ]] && mkdir .local
+          # [[ ! -d .local ]] && mkdir .local
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
@@ -41,9 +41,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            .cache/pip
-            .cache/pipenv
-            .local
+            ~/.cache/pip
+            ~/.cache/pipenv
+            # .local
           key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
       - name: Install dependencies
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
@@ -63,10 +63,8 @@ jobs:
         if: ${{ always() }}
       - name: Info
         run: |
-          echo $PATH
           echo ${{ github.workspace }}
-          ls ${{ github.workspace }}/.cache
-          ls ${{ github.workspace }}/.local
+          ls ~/.cache
   security:
     name: Security - Linux Python ${{ matrix.python-version }}
     needs:
@@ -85,9 +83,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            .cache/pip
-            .cache/pipenv
-            .local
+            ~/.cache/pip
+            ~/.cache/pipenv
           key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
       - name: Audit packages
         run: pipenv run pip-audit
@@ -108,9 +105,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            .cache/pip
-            .cache/pipenv
-            .local
+            ~/.cache/pip
+            ~/.cache/pipenv
           key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
       - name: Check code format with black
         run: pipenv run black --diff --check $(git ls-files '*.py')
