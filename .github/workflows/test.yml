@@ -29,13 +29,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install pipenv
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: |
-          # [[ ! -d .local ]] && mkdir .local
-          python --version
-          python -m pip install --user --upgrade pip
-          python -m pip install --user pipenv
       - name: Cache virtualenv
         id: cache-virtualenv
         uses: actions/cache@v3
@@ -43,10 +36,22 @@ jobs:
           path: |
             ~/.cache/pip
             ~/.cache/pipenv
-            # .local
+            .venv
           key: python-${{ matrix.python-version }}-pipenv
+      - name: Install pipenv
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+        env:
+          PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
+        run: |
+          # [[ ! -d .local ]] && mkdir .local
+          python --version
+          python -m pip install --user --upgrade pip
+          python -m pip install --user pipenv
       - name: Install dependencies
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+        env:
+          PIPENV_NOSPIN: 'true'
+          PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
         run: pipenv install --deploy --dev
       - name: Run unit tests
         run: pipenv run pytest --cov=src --cov-report=term-missing --junitxml=junit/test-results.xml --cov-report=xml
@@ -63,8 +68,10 @@ jobs:
         if: ${{ always() }}
       - name: Info
         run: |
+          pwd
           echo ${{ github.workspace }}
           ls ~/.cache
+          ls .venv
   security:
     name: Security - Linux Python ${{ matrix.python-version }}
     needs:
@@ -85,6 +92,7 @@ jobs:
           path: |
             ~/.cache/pip
             ~/.cache/pipenv
+            .venv
           key: python-${{ matrix.python-version }}-pipenv
       - name: Audit packages
         run: pipenv run pip-audit
@@ -107,15 +115,22 @@ jobs:
           path: |
             ~/.cache/pip
             ~/.cache/pipenv
+            .venv
           key: python-${{ matrix.python-version }}-pipenv
       - name: Check code format with black
-        run: pipenv run black --diff --check $(git ls-files '*.py')
+        run: |
+          pipenv run black --version
+          pipenv run black --diff --check $(git ls-files '*.py')
       - name: Lint with flake8
-        run: pipenv run flake8 --config Set up.cfg --show-source --statistics $(git ls-files '*.py')
+        run: |
+          pipenv run flake8 --version
+          pipenv run flake8 --config Set up.cfg --show-source --statistics $(git ls-files '*.py')
       - name: Lint with mypy
         run: pipenv run mypy $(git ls-files '*.py')
       - name: Lint with pylint
-        run: pipenv run pylint $(git ls-files '*.py')
+        run: |
+          pipenv run pylint --version
+          pipenv run pylint $(git ls-files '*.py')
   coverage:
     name: Coverage - Linux Python 3.8
     runs-on: ubuntu-latest
