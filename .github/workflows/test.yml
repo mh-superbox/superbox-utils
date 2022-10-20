@@ -47,6 +47,7 @@ jobs:
           PIP_CACHE_DIR: $GITHUB_WORKSPACE/.cache/pip
         run: |
           [[ ! -d .local ]] && mkdir .local
+          echo "$GITHUB_WORKSPACE/.local/bin"
           echo "$GITHUB_WORKSPACE/.local/bin" >> $GITHUB_PATH
           python --version
           python -m pip install --user --upgrade pip
