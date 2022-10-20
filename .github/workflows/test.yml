@@ -47,8 +47,7 @@ jobs:
           PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
         run: |
           [[ ! -d .local ]] && mkdir .local
-          echo "${{ github.workspace }}/.local/bin"
-          echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
           echo $GITHUB_PATH
           python --version
           python -m pip install --user --upgrade pip
@@ -74,9 +73,10 @@ jobs:
         if: ${{ always() }}
       - name: Info
         run: |
+          echo $HOME
           echo "CACHE" && ls .cache
           echo "VENV" && ls .venv
-          echo "LOCAL" && ls .local/bin
+#          echo "LOCAL" && ls .local/bin
   security:
     name: Security - Linux Python ${{ matrix.python-version }}
     needs:
