@@ -7,10 +7,10 @@ on:
       - main
 
 env:
-  PIP_CACHE_DIR: ${{ GITHUB_WORKSPACE }}/.cache/pip
-  PIPENV_CACHE_DIR: ${{ GITHUB_WORKSPACE }}/.cache/pipenv
-  PYTHONUSERBASE: ${{ GITHUB_WORKSPACE }}/.local
-  PATH: "$PATH:${{ GITHUB_WORKSPACE }}/.local/bin"
+  PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
+  PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
+  PYTHONUSERBASE: ${{ github.workspace }}/.local
+  PATH: "$PATH:${{ github.workspace }}/.local/bin"
 
 jobs:
   test:
@@ -64,9 +64,9 @@ jobs:
       - name: Info
         run: |
           echo $PATH
-          echo ${{ GITHUB_WORKSPACE }}
-          ls ${{ GITHUB_WORKSPACE }}/.cache
-          ls ${{ GITHUB_WORKSPACE }}/.local
+          echo ${{ github.workspace }}
+          ls ${{ github.workspace }}/.cache
+          ls ${{ github.workspace }}/.local
   security:
     name: Security - Linux Python ${{ matrix.python-version }}
     needs:
