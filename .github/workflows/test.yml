@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         env:
-          PYTHONUSERBASE: $GITHUB_WORKSPACE/.local
+          PYTHONUSERBASE: ${{ github.workspace }}/.local
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -40,15 +40,15 @@ jobs:
             .cache/pipenv
             .local
             .venv
-          key: python-${{ matrix.python-version }}-${{ GITHUB_JOB }}
+          key: python-${{ matrix.python-version }}-${{ github.job }}
       - name: Install pipenv
 #        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         env:
-          PIP_CACHE_DIR: $GITHUB_WORKSPACE/.cache/pip
+          PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
         run: |
           [[ ! -d .local ]] && mkdir .local
-          echo "$GITHUB_WORKSPACE/.local/bin"
-          echo "$GITHUB_WORKSPACE/.local/bin" >> $GITHUB_PATH
+          echo "${{ github.workspace }}/.local/bin"
+          echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
@@ -56,7 +56,7 @@ jobs:
 #        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         env:
           PIPENV_NOSPIN: 'true'
-          PIPENV_CACHE_DIR: $GITHUB_WORKSPACE/.cache/pipenv
+          PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
         run: pipenv install --deploy --dev
       - name: Run unit tests
         run: pipenv run pytest --cov=src --cov-report=term-missing --junitxml=junit/test-results.xml --cov-report=xml
@@ -98,7 +98,7 @@ jobs:
             .cache/pipenv
             .local
             .venv
-          key: python-${{ matrix.python-version }}-${{ GITHUB_JOB }}
+          key: python-${{ matrix.python-version }}-${{ github.job }}
       - name: Info
         run: |
           echo "CACHE" && ls .cache
@@ -106,7 +106,7 @@ jobs:
           echo "LOCAL" && ls .local/bin
       - name: Audit packages
         run: |
-          echo "$GITHUB_WORKSPACE/.local/bin" >> $GITHUB_PATH
+          echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
           pipenv run pip-audit
   check:
     name: Check - Linux Python ${{ matrix.python-version }}
@@ -129,7 +129,7 @@ jobs:
             .cache/pipenv
             .local
             .venv
-          key: python-${{ matrix.python-version }}-${{ GITHUB_JOB }}
+          key: python-${{ matrix.python-version }}-${{ github.job }}
       - name: Check code format with black
         run: |
           pipenv run black --version
