@@ -40,7 +40,7 @@ jobs:
             .cache/pipenv
             .local
             .venv
-          key: python-${{ matrix.python-version }}-${{ github.job }}
+          key: python-${{ matrix.python-version }}-${{ github.run.id }}
       - name: Install pipenv
 #        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         env:
@@ -49,6 +49,7 @@ jobs:
           [[ ! -d .local ]] && mkdir .local
           echo "${{ github.workspace }}/.local/bin"
           echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
+          echo $GITHUB_PATH
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
@@ -98,7 +99,7 @@ jobs:
             .cache/pipenv
             .local
             .venv
-          key: python-${{ matrix.python-version }}-${{ github.job }}
+          key: python-${{ matrix.python-version }}-${{ github.run.id }}
       - name: Info
         run: |
           echo "CACHE" && ls .cache
@@ -129,7 +130,7 @@ jobs:
             .cache/pipenv
             .local
             .venv
-          key: python-${{ matrix.python-version }}-${{ github.job }}
+          key: python-${{ matrix.python-version }}-${{ github.run.id }}
       - name: Check code format with black
         run: |
           pipenv run black --version
