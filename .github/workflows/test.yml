@@ -44,7 +44,7 @@ jobs:
             ~/.cache/pip
             ~/.cache/pipenv
             # .local
-          key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+          key: python-${{ matrix.python-version }}-pipenv
       - name: Install dependencies
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --deploy --dev
@@ -85,7 +85,7 @@ jobs:
           path: |
             ~/.cache/pip
             ~/.cache/pipenv
-          key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+          key: python-${{ matrix.python-version }}-pipenv
       - name: Audit packages
         run: pipenv run pip-audit
   check:
@@ -107,7 +107,7 @@ jobs:
           path: |
             ~/.cache/pip
             ~/.cache/pipenv
-          key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+          key: python-${{ matrix.python-version }}-pipenv
       - name: Check code format with black
         run: pipenv run black --diff --check $(git ls-files '*.py')
       - name: Lint with flake8
