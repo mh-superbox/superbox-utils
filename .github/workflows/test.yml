@@ -17,14 +17,6 @@ jobs:
           - '3.9'
           - '3.10'
     steps:
-      - name: Cache virtualenv
-        id: cache-virtualenv
-        uses: actions/cache@v3
-        with:
-          path: |
-            .local
-            .venv
-          key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -37,6 +29,14 @@ jobs:
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
+      - name: Cache virtualenv
+        id: cache-virtualenv
+        uses: actions/cache@v3
+        with:
+          path: |
+            .local
+            .venv
+          key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
       - name: Install dependencies
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: pipenv install --deploy --dev
