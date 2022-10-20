@@ -95,7 +95,7 @@ jobs:
       - name: Info
         run: |
           echo "CACHE" && ls .cache
-          echo "VENV" && ls .venv
+          echo "VENV" && ls .venv/bin
       - name: Audit packages
         run: pipenv run pip-audit
   check:
