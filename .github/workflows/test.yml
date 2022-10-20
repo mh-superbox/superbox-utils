@@ -39,19 +39,19 @@ jobs:
             .venv
           key: python-${{ matrix.python-version }}-pipenv
       - name: Install pipenv
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+#        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         env:
-          PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
+          PIP_CACHE_DIR: ${{ GITHUB_WORKSPACE }}/.cache/pip
         run: |
           # [[ ! -d .local ]] && mkdir .local
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
       - name: Install dependencies
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+#        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         env:
           PIPENV_NOSPIN: 'true'
-          PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
+          PIPENV_CACHE_DIR: ${{ GITHUB_WORKSPACE }}/.cache/pipenv
         run: pipenv install --deploy --dev
       - name: Run unit tests
         run: pipenv run pytest --cov=src --cov-report=term-missing --junitxml=junit/test-results.xml --cov-report=xml
