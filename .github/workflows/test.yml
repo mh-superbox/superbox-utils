@@ -6,6 +6,12 @@ on:
       - develop
       - main
 
+env:
+  PIP_CACHE_DIR: ${{ GITHUB_WORKSPACE }}/.cache/pip
+  PIPENV_CACHE_DIR: ${{ GITHUB_WORKSPACE }}/.cache/pipenv
+  PYTHONUSERBASE: ${{ GITHUB_WORKSPACE }}/.local
+  PATH: "$PATH:${{ GITHUB_WORKSPACE }}/.local/bin"
+
 jobs:
   test:
     name: Test - Linux Python ${{ matrix.python-version }}
@@ -26,6 +32,7 @@ jobs:
       - name: Install pipenv
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: |
+          [[ ! -d .local ]] && mkdir .local
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
@@ -34,8 +41,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
+            .cache/pip
+            .cache/pipenv
             .local
-            .venv
           key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
       - name: Install dependencies
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
@@ -55,9 +63,10 @@ jobs:
         if: ${{ always() }}
       - name: Info
         run: |
+          echo $PATH
           echo ${{ GITHUB_WORKSPACE }}
+          ls ${{ GITHUB_WORKSPACE }}/.cache
           ls ${{ GITHUB_WORKSPACE }}/.local
-          ls ${{ GITHUB_WORKSPACE }}/.venv
   security:
     name: Security - Linux Python ${{ matrix.python-version }}
     needs:
@@ -76,8 +85,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
+            .cache/pip
+            .cache/pipenv
             .local
-            .venv
           key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
       - name: Audit packages
         run: pipenv run pip-audit
@@ -98,8 +108,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
+            .cache/pip
+            .cache/pipenv
             .local
-            .venv
           key: python-${{ matrix.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
       - name: Check code format with black
         run: pipenv run black --diff --check $(git ls-files '*.py')
