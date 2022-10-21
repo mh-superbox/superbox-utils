@@ -139,17 +139,17 @@ jobs:
       - name: Check code format with black
         run: |
           pipenv run black --version
-          pipenv run black --diff --check .
+          pipenv run black --diff --check $(git ls-files '*.py')
       - name: Lint with flake8
         run: |
           pipenv run flake8 --version
           pipenv run flake8 --show-source --statistics $(git ls-files '*.py')
       - name: Lint with mypy
-        run: pipenv run mypy src tests
+        run: pipenv run mypy $(git ls-files '*.py')
       - name: Lint with pylint
         run: |
           pipenv run pylint --version
-          pipenv run pylint src tests
+          pipenv run pylint $(git ls-files '*.py')
   coverage:
     name: Coverage - Linux Python 3.8
     runs-on: ubuntu-latest
