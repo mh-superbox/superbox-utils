@@ -12,7 +12,7 @@ target-version = ["py38"]
 [tool.mypy]
 python_version = "3.8"
 ignore_missing_imports = true
-mypy_path = ["src", "tests"]
+
 
 [tool.pylint.master]
 # C0114: missing-module-docstring
