@@ -10,7 +10,7 @@ env:
   PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
   PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
   PYTHONUSERBASE: ${{ github.workspace }}/.local
-  WORKON_HOME: ${{ github.workspace }}/.local/.venv
+#  WORKON_HOME: ${{ github.workspace }}/.local/.venv
   PIPENV_NOSPIN: 'true'
 
 jobs:
@@ -39,6 +39,7 @@ jobs:
           path: |
             ${{ github.workspace }}/.cache
             ${{ github.workspace }}/.local
+            .venv
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Install pipenv
         run: |
@@ -86,6 +87,7 @@ jobs:
           path: |
             ${{ github.workspace }}/.cache
             ${{ github.workspace }}/.local
+            .venv
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Audit packages
         run: pipenv run pip-audit
@@ -112,6 +114,7 @@ jobs:
           path: |
             ${{ github.workspace }}/.cache
             ${{ github.workspace }}/.local
+            .venv
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Check code format with black
         run: |
@@ -144,6 +147,7 @@ jobs:
           path: |
             ${{ github.workspace }}/.cache
             ${{ github.workspace }}/.local
+            .venv
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Download coverage
         uses: actions/download-artifact@v3
