@@ -27,8 +27,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-#        env:
-#          PYTHONUSERBASE: ${{ github.workspace }}/.local
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -41,26 +39,16 @@ jobs:
             ${{ env.PIPENV_CACHE_DIR }}
             ${{ env.PYTHONUSERBASE }}
             .venv
-#            .cache/pip
-#            .cache/pipenv
-#            ${{ github.workspace }}/.local
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Install pipenv
-#        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-#        env:
-#          PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
         run: |
           [[ ! -d .local ]] && mkdir .local
-          echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
+          echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
           cat $GITHUB_PATH
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
       - name: Install dependencies
-#        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-#        env:
-#          PIPENV_NOSPIN: 'true'
-#          PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
         run: pipenv install --deploy --dev
       - name: Run unit tests
         run: pipenv run pytest --cov=src --cov-report=term-missing --junitxml=junit/test-results.xml --cov-report=xml
@@ -75,12 +63,6 @@ jobs:
           name: pytest-results-${{ matrix.python-version }}
           path: junit/test-results.xml
         if: ${{ always() }}
-#      - name: Info
-#        run: |
-#          echo $HOME
-#          echo "CACHE" && ls .cache
-#          echo "VENV" && ls .venv
-##          echo "LOCAL" && ls .local/bin
   security:
     name: Security - Linux Python ${{ matrix.python-version }}
     needs:
@@ -106,12 +88,12 @@ jobs:
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Info
         run: |
+          cat $GITHUB_PATH
           echo "CACHE" && ls .cache
           echo "VENV" && ls .venv/bin
           echo "LOCAL-BIN" && ls .local/bin
       - name: Audit packages
         run: |
-          echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
           pipenv run pip-audit
   check:
     name: Check - Linux Python ${{ matrix.python-version }}
