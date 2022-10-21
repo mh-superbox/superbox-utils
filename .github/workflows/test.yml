@@ -24,26 +24,21 @@ jobs:
           - '3.9'
           - '3.10'
     steps:
+      - name: Update system path
+        run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Update system path
-        run: |
-          echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
-          cat $GITHUB_PATH
       - name: Cache virtualenv
         id: cache-virtualenv
         uses: actions/cache@v3
         with:
           path: |
-            ${{ github.workspace }}
-#            ${{ env.PIP_CACHE_DIR }}
-#            ${{ env.PIPENV_CACHE_DIR }}
-#            ${{ env.PYTHONUSERBASE }}
-#            ${{ env.WORKON_HOME }}
+            ${{ github.workspace }}/.cache
+            ${{ github.workspace }}/.local
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Install pipenv
         run: |
@@ -80,6 +75,10 @@ jobs:
           - '3.9'
           - '3.10'
     steps:
+      - name: Update system path
+        run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
+      - name: Check out repository
+        uses: actions/checkout@v3
       - name: Cache virtualenv
         id: cache-virtualenv
         uses: actions/cache@v3
@@ -87,16 +86,8 @@ jobs:
           path: |
             ${{ github.workspace }}
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
-      - name: Info
-        run: |
-          echo "ROOT" && ls ${{ github.workspace }}
-          echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
-          cat $GITHUB_PATH
-          echo "WORKON" && ls ${{ env.WORKON_HOME }}
       - name: Audit packages
-        run: |
-          pipenv --venv
-          pipenv run pip-audit
+        run: pipenv run pip-audit
   check:
     name: Check - Linux Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
@@ -109,12 +100,17 @@ jobs:
           - '3.9'
           - '3.10'
     steps:
+      - name: Update system path
+        run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
+      - name: Check out repository
+        uses: actions/checkout@v3
       - name: Cache virtualenv
         id: cache-virtualenv
         uses: actions/cache@v3
         with:
           path: |
-            ${{ github.workspace }}
+            ${{ github.workspace }}/.cache
+            ${{ github.workspace }}/.local
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Check code format with black
         run: |
@@ -136,7 +132,18 @@ jobs:
     needs:
       - test
     steps:
-      - uses: actions/checkout@v3
+      - name: Update system path
+        run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Cache virtualenv
+        id: cache-virtualenv
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/.cache
+            ${{ github.workspace }}/.local
+          key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Download coverage
         uses: actions/download-artifact@v3
         with:
