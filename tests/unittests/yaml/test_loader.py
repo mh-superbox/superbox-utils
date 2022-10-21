@@ -5,8 +5,8 @@ import pytest
 
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.yaml.loader import yaml_loader_safe
-from unittests.yaml.test_loader_data import INVALID_YAML
-from unittests.yaml.test_loader_data import VALID_YAML
+from tests.unittests.yaml.test_loader_data import INVALID_YAML
+from tests.unittests.yaml.test_loader_data import VALID_YAML
 
 
 class TestHappyPathLoader:
