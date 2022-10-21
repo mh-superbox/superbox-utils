@@ -28,10 +28,6 @@ jobs:
         run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
       - name: Check out repository
         uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
       - name: Cache virtualenv
         id: cache-virtualenv
         uses: actions/cache@v3
@@ -39,13 +35,19 @@ jobs:
           path: |
             ${{ github.workspace }}/.cache
             ${{ github.workspace }}/.local
-          key: python-${{ matrix.python-version }}-${{ github.run_id }}
+          key: python-${{ matrix.python-version }}-${{ hashFiles('Pipfile.lock') }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
       - name: Install pipenv
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: |
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
       - name: Install dependencies
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: |
           pipenv install --deploy --dev
   tests:
@@ -109,7 +111,7 @@ jobs:
           path: |
             ${{ github.workspace }}/.cache
             ${{ github.workspace }}/.local
-          key: python-${{ matrix.python-version }}-${{ github.run_id }}
+          key: python-${{ matrix.python-version }}-${{ hashFiles('Pipfile.lock') }}
       - name: Audit packages
         run: pipenv run pip-audit
   check:
@@ -135,7 +137,7 @@ jobs:
           path: |
             ${{ github.workspace }}/.cache
             ${{ github.workspace }}/.local
-          key: python-${{ matrix.python-version }}-${{ github.run_id }}
+          key: python-${{ matrix.python-version }}-${{ hashFiles('Pipfile.lock') }}
       - name: Check code format with black
         run: |
           pipenv run black --version
@@ -167,7 +169,7 @@ jobs:
           path: |
             ${{ github.workspace }}/.cache
             ${{ github.workspace }}/.local
-          key: python-${{ matrix.python-version }}-${{ github.run_id }}
+          key: python-${{ matrix.python-version }}-${{ hashFiles('Pipfile.lock') }}
       - name: Download coverage
         uses: actions/download-artifact@v3
         with:
