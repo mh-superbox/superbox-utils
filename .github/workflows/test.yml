@@ -39,10 +39,11 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ${{ env.PIP_CACHE_DIR }}
-            ${{ env.PIPENV_CACHE_DIR }}
-            ${{ env.PYTHONUSERBASE }}
-            ${{ env.WORKON_HOME }}
+            ${{ github.workspace }}
+#            ${{ env.PIP_CACHE_DIR }}
+#            ${{ env.PIPENV_CACHE_DIR }}
+#            ${{ env.PYTHONUSERBASE }}
+#            ${{ env.WORKON_HOME }}
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Install pipenv
         run: |
@@ -84,10 +85,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ${{ env.PIP_CACHE_DIR }}
-            ${{ env.PIPENV_CACHE_DIR }}
-            ${{ env.PYTHONUSERBASE }}
-            ${{ env.WORKON_HOME }}
+            ${{ github.workspace }}
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Info
         run: |
@@ -116,10 +114,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ${{ env.PIP_CACHE_DIR }}
-            ${{ env.PIPENV_CACHE_DIR }}
-            ${{ env.PYTHONUSERBASE }}
-            ${{ env.WORKON_HOME }}
+            ${{ github.workspace }}
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Check code format with black
         run: |
