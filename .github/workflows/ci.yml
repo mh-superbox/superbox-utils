@@ -66,6 +66,14 @@ jobs:
         run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
       - name: Check out repository
         uses: actions/checkout@v3
+      - name: Cache virtualenv
+        id: cache-virtualenv
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/.cache
+            ${{ github.workspace }}/.local
+          key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Run unit tests
         run: pipenv run pytest --cov=src --cov-report=term-missing --junitxml=junit/test-results.xml --cov-report=xml
       - name: Upload coverage
