@@ -30,6 +30,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Update system path
+        run: |
+          echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
+          cat $GITHUB_PATH
       - name: Cache virtualenv
         id: cache-virtualenv
         uses: actions/cache@v3
@@ -42,8 +46,6 @@ jobs:
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Install pipenv
         run: |
-          echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
-          cat $GITHUB_PATH
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
