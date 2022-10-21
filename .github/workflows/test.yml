@@ -11,7 +11,6 @@ env:
   PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
   PYTHONUSERBASE: ${{ github.workspace }}/.local
   PIPENV_NOSPIN: 'true'
-#  PATH: "$PATH:${{ github.workspace }}/.local/bin"
 
 jobs:
   test:
@@ -88,6 +87,7 @@ jobs:
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Info
         run: |
+          echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
           cat $GITHUB_PATH
           echo "CACHE" && ls .cache
           echo "VENV" && ls .venv/bin
