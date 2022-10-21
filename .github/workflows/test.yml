@@ -94,6 +94,7 @@ jobs:
           echo "LOCAL-BIN" && ls .local/bin
       - name: Audit packages
         run: |
+          pipenv --venv
           pipenv run pip-audit
   check:
     name: Check - Linux Python ${{ matrix.python-version }}
