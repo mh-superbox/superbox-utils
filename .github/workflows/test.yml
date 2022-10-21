@@ -41,7 +41,6 @@ jobs:
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Install pipenv
         run: |
-          [[ ! -d .local ]] && mkdir .local
           echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
           cat $GITHUB_PATH
           python --version
