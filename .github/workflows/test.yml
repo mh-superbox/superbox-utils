@@ -10,6 +10,7 @@ env:
   PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
   PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
   PYTHONUSERBASE: ${{ github.workspace }}/.local
+  WORKON_HOME: ${{ github.workspace }}/.local/.venv
   PIPENV_NOSPIN: 'true'
 
 jobs:
@@ -37,7 +38,7 @@ jobs:
             ${{ env.PIP_CACHE_DIR }}
             ${{ env.PIPENV_CACHE_DIR }}
             ${{ env.PYTHONUSERBASE }}
-            .venv
+            ${{ env.WORKON_HOME }}
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Install pipenv
         run: |
@@ -82,15 +83,13 @@ jobs:
             ${{ env.PIP_CACHE_DIR }}
             ${{ env.PIPENV_CACHE_DIR }}
             ${{ env.PYTHONUSERBASE }}
-            .venv
+            ${{ env.WORKON_HOME }}
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Info
         run: |
           echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
           cat $GITHUB_PATH
-          echo "CACHE" && ls .cache
-          echo "VENV" && ls .venv/bin
-          echo "LOCAL-BIN" && ls .local/bin
+          echo "WORKON" && ls ${{ env.WORKON_HOME }}
       - name: Audit packages
         run: |
           pipenv --venv
@@ -115,7 +114,7 @@ jobs:
             ${{ env.PIP_CACHE_DIR }}
             ${{ env.PIPENV_CACHE_DIR }}
             ${{ env.PYTHONUSERBASE }}
-            .venv
+            ${{ env.WORKON_HOME }}
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Check code format with black
         run: |
