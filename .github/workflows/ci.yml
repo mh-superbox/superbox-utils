@@ -37,6 +37,7 @@ jobs:
             ${{ github.workspace }}/.local
           key: python-${{ matrix.python-version }}-${{ hashFiles('Pipfile.lock') }}
       - name: Set up Python ${{ matrix.python-version }}
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
