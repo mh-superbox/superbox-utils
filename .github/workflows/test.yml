@@ -6,10 +6,11 @@ on:
       - develop
       - main
 
-#env:
-#  PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
-#  PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
-#  PYTHONUSERBASE: ${{ github.workspace }}/.local
+env:
+  PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
+  PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
+  PYTHONUSERBASE: ${{ github.workspace }}/.local
+  PIPENV_NOSPIN: 'true'
 #  PATH: "$PATH:${{ github.workspace }}/.local/bin"
 
 jobs:
@@ -26,8 +27,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        env:
-          PYTHONUSERBASE: ${{ github.workspace }}/.local
+#        env:
+#          PYTHONUSERBASE: ${{ github.workspace }}/.local
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -36,27 +37,30 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            .cache/pip
-            .cache/pipenv
-            .local
+            ${{ env.PIP_CACHE_DIR }}
+            ${{ env.PIPENV_CACHE_DIR }}
+            ${{ env.PYTHONUSERBASE }}
             .venv
+#            .cache/pip
+#            .cache/pipenv
+#            ${{ github.workspace }}/.local
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Install pipenv
 #        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        env:
-          PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
+#        env:
+#          PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
         run: |
           [[ ! -d .local ]] && mkdir .local
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          echo $GITHUB_PATH
+          echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
+          cat /home/runner/work/_temp/_runner_file_commands/add_path_215dc5fa-8896-4f07-a7ac-d2da4ce1478f
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
       - name: Install dependencies
 #        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        env:
-          PIPENV_NOSPIN: 'true'
-          PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
+#        env:
+#          PIPENV_NOSPIN: 'true'
+#          PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
         run: pipenv install --deploy --dev
       - name: Run unit tests
         run: pipenv run pytest --cov=src --cov-report=term-missing --junitxml=junit/test-results.xml --cov-report=xml
@@ -71,12 +75,12 @@ jobs:
           name: pytest-results-${{ matrix.python-version }}
           path: junit/test-results.xml
         if: ${{ always() }}
-      - name: Info
-        run: |
-          echo $HOME
-          echo "CACHE" && ls .cache
-          echo "VENV" && ls .venv
-#          echo "LOCAL" && ls .local/bin
+#      - name: Info
+#        run: |
+#          echo $HOME
+#          echo "CACHE" && ls .cache
+#          echo "VENV" && ls .venv
+##          echo "LOCAL" && ls .local/bin
   security:
     name: Security - Linux Python ${{ matrix.python-version }}
     needs:
@@ -95,16 +99,16 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            .cache/pip
-            .cache/pipenv
-            .local
+            ${{ env.PIP_CACHE_DIR }}
+            ${{ env.PIPENV_CACHE_DIR }}
+            ${{ env.PYTHONUSERBASE }}
             .venv
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Info
         run: |
           echo "CACHE" && ls .cache
           echo "VENV" && ls .venv/bin
-          echo "LOCAL" && ls .local/bin
+          echo "LOCAL-BIN" && ls .local/bin
       - name: Audit packages
         run: |
           echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
@@ -126,9 +130,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            .cache/pip
-            .cache/pipenv
-            .local
+            ${{ env.PIP_CACHE_DIR }}
+            ${{ env.PIPENV_CACHE_DIR }}
+            ${{ env.PYTHONUSERBASE }}
             .venv
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Check code format with black
