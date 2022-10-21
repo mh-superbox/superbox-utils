@@ -48,8 +48,6 @@ jobs:
       - name: Install dependencies
         run: |
           pipenv install --deploy --dev
-
-
   tests:
     name: Tests - Linux Python ${{ matrix.python-version }}
     needs:

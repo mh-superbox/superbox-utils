@@ -8,9 +8,9 @@ import pytest
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.config.loader import ConfigLoaderMixin
 from superbox_utils.logging.config import LoggingConfig
-from tests.unittests.config.test_loader_data import CONFIG_INVALID_TYPE
-from tests.unittests.config.test_loader_data import CONFIG_LOGGING_INFO
-from tests.unittests.config.test_loader_data import CONFIG_LOGGING_WARNING
+from unittests.config.test_loader_data import CONFIG_INVALID_TYPE
+from unittests.config.test_loader_data import CONFIG_LOGGING_INFO
+from unittests.config.test_loader_data import CONFIG_LOGGING_WARNING
 
 
 @dataclass
