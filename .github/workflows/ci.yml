@@ -182,8 +182,8 @@ jobs:
       - name: Commit coverage badge
         if: steps.changed_files.outputs.files_changed == 'true'
         run: |
-          git config --local user.email "mh@superbox.one"
-          git config --local user.name "Michael Hacker"
+          git config --local user.email "noreply@superbox.one"
+          git config --local user.name "Github Workflow"
           git add coverage.svg
           git commit -m "Updated coverage.svg"
       - name: Push changes

@@ -14,4 +14,4 @@ class TestHappyPathDataDict:
 
         del data_dict["key"]
 
-        assert len(data_dict) == 0
+        assert not len(data_dict)
