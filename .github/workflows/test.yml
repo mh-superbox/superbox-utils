@@ -52,7 +52,7 @@ jobs:
         run: |
           [[ ! -d .local ]] && mkdir .local
           echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
-          cat /home/runner/work/_temp/_runner_file_commands/add_path_215dc5fa-8896-4f07-a7ac-d2da4ce1478f
+          cat $GITHUB_PATH
           python --version
           python -m pip install --user --upgrade pip
           python -m pip install --user pipenv
