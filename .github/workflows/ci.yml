@@ -215,6 +215,9 @@ jobs:
   deploy:
     needs:
       - check-tag
+      - tests
+      - check
+      - coverage
     if: needs.check-tag.outputs.release-type == 'release' || needs.check-tag.outputs.release-type == 'prerelease'
     runs-on: ubuntu-latest
     steps:
