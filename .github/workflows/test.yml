@@ -91,6 +91,7 @@ jobs:
           key: python-${{ matrix.python-version }}-${{ github.run_id }}
       - name: Info
         run: |
+          echo "ROOT" && ls ${{ github.workspace }}
           echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
           cat $GITHUB_PATH
           echo "WORKON" && ls ${{ env.WORKON_HOME }}
