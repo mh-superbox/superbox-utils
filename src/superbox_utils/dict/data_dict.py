@@ -6,7 +6,7 @@ class DataDict(MutableMapping):
 
     Attributes
     ----------
-    data : dict
+    data: dict
         Store the data for this container object.
     """
 
