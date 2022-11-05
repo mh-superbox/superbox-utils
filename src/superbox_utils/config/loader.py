@@ -16,7 +16,11 @@ class RegexValidation(NamedTuple):
 
 
 class Validation:
-    ALLOWED_CHARACTERS: RegexValidation = RegexValidation(
+    NAME: RegexValidation = RegexValidation(
+        regex=r"^[A-Za-z\d\s_-]*$", error="The following characters are prohibited: a-z 0-9 -_ space"
+    )
+
+    ID: RegexValidation = RegexValidation(
         regex=r"^[A-Za-z\d_-]*$", error="The following characters are prohibited: a-z 0-9 -_"
     )
 

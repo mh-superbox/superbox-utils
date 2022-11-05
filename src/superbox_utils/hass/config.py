@@ -16,9 +16,9 @@ class HomeAssistantConfig(ConfigLoaderMixin):
     def _validate_discovery_prefix(self, value: str, _field: dataclasses.Field) -> str:
         value = value.lower()
 
-        if re.search(Validation.ALLOWED_CHARACTERS.regex, value) is None:
+        if re.search(Validation.ID.regex, value) is None:
             raise ConfigException(
-                f"[{self.__class__.__name__.replace('Config', '').upper()}] Invalid value '{value}' in '{_field.name}'. {Validation.ALLOWED_CHARACTERS.error}"
+                f"[{self.__class__.__name__.replace('Config', '').upper()}] Invalid value '{value}' in '{_field.name}'. {Validation.ID.error}"
             )
 
         return value
