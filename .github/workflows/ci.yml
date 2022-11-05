@@ -213,6 +213,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
   deploy:
+    name: Upload Package to PyPi
     needs:
       - check-tag
       - tests

@@ -19,8 +19,6 @@ class TestHappyPathLoader:
     )
     def test_yaml_loader_safe(self, _content_to_file: Path, expected: type):
         yaml_data: Union[dict, list] = yaml_loader_safe(_content_to_file)
-        print(yaml_data)
-
         assert isinstance(yaml_data, expected)
 
 
