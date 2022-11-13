@@ -4,6 +4,17 @@ from superbox_utils.logging import LOG_LEVEL
 
 
 def init_argparse(description: str) -> argparse.ArgumentParser:
+    """Initialize argument parser with default arguments.
+
+    Parameters
+    ----------
+    description: str
+        Argument parser description.
+
+    Returns
+    -------
+    ArgumentParser
+    """
     parser: argparse.ArgumentParser = argparse.ArgumentParser(description)
 
     parser.add_argument(

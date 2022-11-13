@@ -14,10 +14,20 @@ class LoggingConfig(ConfigLoaderMixin):
     level: str = field(default="error")
 
     @property
-    def verbose(self):
+    def verbose(self) -> int:
+        """Get logging verbose level as integer."""
         return list(LOG_LEVEL).index(self.level)
 
     def update_level(self, name: str, verbose: int = 0):
+        """Update the logging level in config data class.
+
+        Parameters
+        ----------
+        name: str
+            The logger name.
+        verbose: int
+            Logging verbose level as integer.
+        """
         logger = logging.getLogger(name)
 
         levels: List[int] = list(LOG_LEVEL.values())

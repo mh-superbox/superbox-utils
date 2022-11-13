@@ -28,6 +28,13 @@ class Validation:
 @dataclass
 class ConfigLoaderMixin:
     def update(self, new):
+        """Update and validate config data class with settings from a dictionary.
+
+        Parameters
+        ----------
+        new: dict
+            Overwrite settings as dictionary.
+        """
         for key, value in new.items():
             if hasattr(self, key):
                 item = getattr(self, key)
@@ -40,6 +47,13 @@ class ConfigLoaderMixin:
         self.validate()
 
     def update_from_yaml_file(self, config_path: Path):
+        """Update and validate config data class with settings from a YAML file.
+
+        Parameters
+        ----------
+        config_path: Path
+            Path to the YAML file.
+        """
         if config_path.exists():
             yaml_data: Union[dict, list] = yaml_loader_safe(config_path)
 
@@ -47,6 +61,7 @@ class ConfigLoaderMixin:
                 self.update(yaml_data)
 
     def validate(self):
+        """Validate config data class arguments."""
         for _field in dataclasses.fields(self):
             value: Any = getattr(self, _field.name)
 

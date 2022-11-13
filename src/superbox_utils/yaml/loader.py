@@ -7,6 +7,22 @@ from superbox_utils.config.exception import ConfigException
 
 
 def yaml_loader_safe(yaml_file: Path) -> Union[dict, list]:
+    """Read a YAML file.
+
+    Parameters
+    ----------
+    yaml_file: Path
+        Path to the YAML file.
+
+    Returns
+    -------
+    YAML file content as dict or list
+
+    Raises
+    ------
+    ConfigException
+        Raise if the YAML file can't be read.
+    """
     try:
         return yaml.load(yaml_file.read_text(), Loader=yaml.FullLoader)
     except yaml.MarkedYAMLError as error:
