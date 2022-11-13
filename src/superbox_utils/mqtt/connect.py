@@ -17,6 +17,19 @@ class LogPrefix:
 
 
 async def mqtt_connect(mqtt_config: MqttConfig, logger: logging.Logger, mqtt_client_id: str, callback: Callable):
+    """Connect to MQTT broker and automatically rety on disconnect.
+
+    Parameters
+    ----------
+    mqtt_config: MqttConfig
+        MQTT config class with hostname, port, keepalive, retry limit and reconnect interval.
+    logger: logging.Logger
+        The current used logger.
+    mqtt_client_id: str
+        A unique MQTT client ID.
+    callback: Callback
+        A callback function that executed after successful MQTT connect.
+    """
     logger.info("%s Client ID: %s", LogPrefix.MQTT, mqtt_client_id)
 
     reconnect_interval: int = mqtt_config.reconnect_interval

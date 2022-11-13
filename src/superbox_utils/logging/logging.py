@@ -19,6 +19,23 @@ stream_handler: logging.StreamHandler = logging.StreamHandler()
 
 
 def init_logger(name: str, level: str, handlers: list, fmt: Optional[str] = None) -> logging.Logger:
+    """Initialize logger.
+
+    Parameters
+    ----------
+    name: str
+        The logger name.
+    level: str
+        Logging level error, warning, info or debug.
+    handlers: list
+        A list of logger handlers e.g. StreamHandler.
+    fmt: str, optional
+        Logger format string.
+
+    Returns
+    -------
+    Logger
+    """
     logger: logging.Logger = logging.getLogger(name)
     logger.setLevel(LOG_LEVEL[level.lower()])
 

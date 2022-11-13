@@ -3,7 +3,7 @@ requires = ["setuptools>=43.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.check-manifest]
-ignore = [".editorconfig", ".pre-commit-config.yaml", "Pipfile", "Pipfile.lock"]
+ignore = [".editorconfig", "Pipfile", "Pipfile.lock"]
 
 [tool.black]
 line-length = 120
@@ -26,7 +26,7 @@ disable = ["C0114", "C0115", "C0116", "C0301", "C0411", "E0401", "R0801", "R1732
 notes = ["FIXME"]
 
 load-plugins = [
-    # "pylint.extensions.bad_builtin",
+    "pylint.extensions.bad_builtin",
     "pylint.extensions.check_elif",
     "pylint.extensions.code_style",
     "pylint.extensions.comparetozero",
@@ -55,7 +55,6 @@ argument-rgx = "_?[a-z]{1,}[a-z_0-9]{0,30}(?<!_)$"
 class-attribute-rgx = "_?[A-Za-z]{1,}[A-Za-z_0-9]{0,30}(?<!_)$"
 variable-rgx = "_?[a-z]{1,}[a-z_0-9]{0,30}(?<!_)$"
 max-args = 10
-max-attributes = 30  # TODO: Refactor code
 
 [tool.pylint.variables]
 init-import = true
