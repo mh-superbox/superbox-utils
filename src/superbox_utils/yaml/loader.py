@@ -1,9 +1,7 @@
+import yaml  # type: ignore
 from pathlib import Path
-from typing import Union
-
-import yaml
-
 from superbox_utils.config.exception import ConfigException
+from typing import Union
 
 
 def yaml_loader_safe(yaml_file: Path) -> Union[dict, list]:
