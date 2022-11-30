@@ -44,12 +44,13 @@ class TestUnHappyLoggingConfig:
     )
     def test_logging_config(
         self,
+        tmp_path: Path,
         config: dict,
         expected: str,
     ):
         with pytest.raises(ConfigException) as error:
             logging_config = LoggingConfig()
             logging_config.update(config)
-            logging_config.init(name="test-logger")
+            logging_config.init(name="test-logger", log_path=tmp_path)
 
         assert str(error.value) == expected
