@@ -20,6 +20,7 @@ pylint = "*"
 pip-audit = "*"
 pytest = "~=7.2.0"
 pytest-cov = "~=4.0.0"
+pytest-mock = "~=3.10.0"
 types-pyyaml = "*"
 yamllint = "~=1.28.0"
 

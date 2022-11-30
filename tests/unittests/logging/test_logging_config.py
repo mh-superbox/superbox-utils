@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from superbox_utils.config.exception import ConfigException
@@ -8,20 +10,21 @@ class TestHappyLoggingConfig:
     @pytest.mark.parametrize(
         "config, expected",
         [
-            ({"level": "error"}, {"level": "error", "verbose": 0}),
-            ({"level": "warning"}, {"level": "warning", "verbose": 1}),
-            ({"level": "info"}, {"level": "info", "verbose": 2}),
-            ({"level": "debug"}, {"level": "debug", "verbose": 3}),
+            ({"output": "file", "level": "error"}, {"level": "error", "verbose": 0}),
+            ({"output": "file", "level": "warning"}, {"level": "warning", "verbose": 1}),
+            ({"output": "systemd", "level": "info"}, {"level": "info", "verbose": 2}),
+            ({"output": "systemd", "level": "debug"}, {"level": "debug", "verbose": 3}),
         ],
     )
     def test_logging_config(
         self,
+        tmp_path: Path,
         config: dict,
         expected: dict,
     ):
         logging_config = LoggingConfig()
         logging_config.update(config)
-        logging_config.update_level(name="test-logger")
+        logging_config.init(name="test-logger", log_path=tmp_path)
 
         assert isinstance(logging_config.level, str)
 
@@ -47,6 +50,6 @@ class TestUnHappyLoggingConfig:
         with pytest.raises(ConfigException) as error:
             logging_config = LoggingConfig()
             logging_config.update(config)
-            logging_config.update_level(name="test-logger")
+            logging_config.init(name="test-logger")
 
         assert str(error.value) == expected

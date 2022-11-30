@@ -22,13 +22,15 @@ class LoggingConfig(ConfigLoaderMixin):
         """Get logging verbose level as integer."""
         return list(LOG_LEVEL).index(self.level)
 
-    def init(self, name: str):
+    def init(self, name: str, log_path: Path):
         """Initialize logger handler and formatter.
 
         Parameters
         ----------
         name: str
             The logger name.
+        log_path: Path
+            custom log path.
         """
         logger: logging.Logger = logging.getLogger(name)
         logger.setLevel(LOG_LEVEL["info"])
@@ -44,7 +46,6 @@ class LoggingConfig(ConfigLoaderMixin):
         logger.addHandler(c_handler)
 
         if self.output == "file":
-            log_path: Path = Path(f"/var/log/{name}")
             log_path.mkdir(exist_ok=True, parents=True)
 
             f_handler = logging.FileHandler(log_path / f"{name}.log")
