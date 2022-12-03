@@ -7,14 +7,13 @@ from typing import List
 
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.config.loader import ConfigLoaderMixin
+from superbox_utils.logging import DATETIME_LOG_FORMAT
 from superbox_utils.logging import DEFAULT_LOG_FORMAT
-from superbox_utils.logging import FILE_LOG_FORMAT
 from superbox_utils.logging import LOG_LEVEL
 
 
 @dataclass
 class LoggingConfig(ConfigLoaderMixin):
-    output: str = field(default="systemd")
     level: str = field(default="error")
 
     @property
@@ -22,39 +21,42 @@ class LoggingConfig(ConfigLoaderMixin):
         """Get logging verbose level as integer."""
         return list(LOG_LEVEL).index(self.level)
 
-    def init(self, name: str, log_path: Path):
+    def init(self, name: str, log: str, log_path: Path, verbose: int = 0):
         """Initialize logger handler and formatter.
 
         Parameters
         ----------
         name: str
             The logger name.
+        log: str
+            set log handler to file or systemd.
         log_path: Path
             custom log path.
+        verbose: int
+            Logging verbose level as integer.
         """
         logger: logging.Logger = logging.getLogger(name)
         logger.setLevel(LOG_LEVEL["info"])
 
         c_handler = logging.StreamHandler()
-        c_handler.setFormatter(logging.Formatter(DEFAULT_LOG_FORMAT))
 
-        if self.output == "systemd":
+        if log == "systemd":
             c_handler.setFormatter(logging.Formatter(DEFAULT_LOG_FORMAT))
-        else:
-            c_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
-
-        logger.addHandler(c_handler)
-
-        if self.output == "file":
+            logger.addHandler(c_handler)
+        elif log == "file":
+            logger.addHandler(c_handler)
             log_path.mkdir(exist_ok=True, parents=True)
 
             f_handler = logging.FileHandler(log_path / f"{name}.log")
-            f_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
+            f_handler.setFormatter(logging.Formatter(DATETIME_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
             logger.addHandler(f_handler)
+        else:
+            c_handler.setFormatter(logging.Formatter(DATETIME_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
+            logger.addHandler(c_handler)
 
-        self.update_level(name)
+        self.update_level(name, verbose)
 
-    def update_level(self, name: str, verbose: int = 0):
+    def update_level(self, name: str, verbose: int):
         """Update the logging level in config data class.
 
         Parameters

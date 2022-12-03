@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 
 import pytest
 
@@ -8,23 +9,24 @@ from superbox_utils.logging.config import LoggingConfig
 
 class TestHappyLoggingConfig:
     @pytest.mark.parametrize(
-        "config, expected",
+        "config, log, expected",
         [
-            ({"output": "file", "level": "error"}, {"level": "error", "verbose": 0}),
-            ({"output": "file", "level": "warning"}, {"level": "warning", "verbose": 1}),
-            ({"output": "systemd", "level": "info"}, {"level": "info", "verbose": 2}),
-            ({"output": "systemd", "level": "debug"}, {"level": "debug", "verbose": 3}),
+            ({"level": "error"}, "systemd", {"level": "error", "verbose": 0}),
+            ({"level": "warning"}, "file", {"level": "warning", "verbose": 1}),
+            ({"level": "info"}, None, {"level": "info", "verbose": 2}),
+            ({"level": "debug"}, None, {"level": "debug", "verbose": 3}),
         ],
     )
     def test_logging_config(
         self,
         tmp_path: Path,
         config: dict,
+        log: Optional[str],
         expected: dict,
     ):
         logging_config = LoggingConfig()
         logging_config.update(config)
-        logging_config.init(name="test-logger", log_path=tmp_path)
+        logging_config.init(name="test-logger", log=log, log_path=tmp_path)
 
         assert isinstance(logging_config.level, str)
 

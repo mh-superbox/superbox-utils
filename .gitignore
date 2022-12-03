@@ -4,6 +4,7 @@
 *.swp
 .DS_Store
 ._*
+coverage.xml
 .coverage
 .idea
 .mypy_cache
@@ -11,4 +12,5 @@
 .venv
 build/*
 dist/*
+test-results.xml
 tmp

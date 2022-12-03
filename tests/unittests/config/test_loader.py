@@ -34,7 +34,7 @@ class TestHappyPathLoader:
 
         assert config.logging.level == expected
         assert is_dataclass(config) is True
-        assert str(config) == f"Config(logging=LoggingConfig(output='systemd', level='{expected}'), features={{}})"
+        assert str(config) == f"Config(logging=LoggingConfig(level='{expected}'), features={{}})"
 
 
 class TestUnhappyPathLoader:
