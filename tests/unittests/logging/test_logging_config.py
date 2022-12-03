@@ -36,10 +36,11 @@ class TestHappyLoggingConfig:
 
 class TestUnHappyLoggingConfig:
     @pytest.mark.parametrize(
-        "config, expected",
+        "config, log, expected",
         [
             (
                 {"level": "invalid"},
+                "systemd",
                 "[LOGGING] Invalid log level 'invalid'. The following log levels are allowed: error warning info debug.",
             ),
         ],
@@ -48,11 +49,12 @@ class TestUnHappyLoggingConfig:
         self,
         tmp_path: Path,
         config: dict,
+        log: Optional[str],
         expected: str,
     ):
         with pytest.raises(ConfigException) as error:
             logging_config = LoggingConfig()
             logging_config.update(config)
-            logging_config.init(name="test-logger", log_path=tmp_path)
+            logging_config.init(name="test-logger", log=log, log_path=tmp_path)
 
         assert str(error.value) == expected

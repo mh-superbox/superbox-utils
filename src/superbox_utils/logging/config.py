@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
 from typing import List
+from typing import Optional
 
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.config.loader import ConfigLoaderMixin
@@ -21,7 +22,7 @@ class LoggingConfig(ConfigLoaderMixin):
         """Get logging verbose level as integer."""
         return list(LOG_LEVEL).index(self.level)
 
-    def init(self, name: str, log: str, log_path: Path, verbose: int = 0):
+    def init(self, name: str, log: Optional[str], log_path: Path, verbose: int = 0):
         """Initialize logger handler and formatter.
 
         Parameters
