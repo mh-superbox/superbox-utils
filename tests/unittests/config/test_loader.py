@@ -4,13 +4,13 @@ from dataclasses import is_dataclass
 from pathlib import Path
 
 import pytest
-from unittests.config.test_loader_data import CONFIG_INVALID_TYPE
-from unittests.config.test_loader_data import CONFIG_LOGGING_INFO
-from unittests.config.test_loader_data import CONFIG_LOGGING_WARNING
 
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.config.loader import ConfigLoaderMixin
 from superbox_utils.logging.config import LoggingConfig
+from unittests.config.test_loader_data import CONFIG_INVALID_TYPE
+from unittests.config.test_loader_data import CONFIG_LOGGING_INFO
+from unittests.config.test_loader_data import CONFIG_LOGGING_WARNING
 
 
 @dataclass
