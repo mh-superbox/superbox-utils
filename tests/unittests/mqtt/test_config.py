@@ -13,7 +13,7 @@ class TestHappyConfig:
             ),
         ],
     )
-    def test_mqtt_config(self, config: dict, expected: dict):
+    def test_mqtt_config(self, config: dict, expected: dict) -> None:
         mqtt_config = MqttConfig()
         mqtt_config.update(config)
 

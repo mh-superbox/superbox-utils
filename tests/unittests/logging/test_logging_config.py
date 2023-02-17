@@ -23,7 +23,7 @@ class TestHappyLoggingConfig:
         config: dict,
         log: Optional[str],
         expected: dict,
-    ):
+    ) -> None:
         logging_config = LoggingConfig()
         logging_config.update(config)
         logging_config.init(name="test-logger", log=log, log_path=tmp_path)
@@ -51,7 +51,7 @@ class TestUnHappyLoggingConfig:
         config: dict,
         log: Optional[str],
         expected: str,
-    ):
+    ) -> None:
         with pytest.raises(ConfigException) as error:
             logging_config = LoggingConfig()
             logging_config.update(config)

@@ -9,7 +9,7 @@ class TestHappyPathArgparse:
         "description, arguments, expected",
         [("DESCRIPTION", ["-vv"], "Namespace(log=None, verbose=2)")],
     )
-    def test_init_argparse(self, description: str, arguments: list, expected: str):
+    def test_init_argparse(self, description: str, arguments: list, expected: str) -> None:
         parser: argparse.ArgumentParser = init_argparse(description)
         args: argparse.Namespace = parser.parse_args(arguments)
 
