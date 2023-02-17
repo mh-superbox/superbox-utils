@@ -11,7 +11,6 @@ on:
 env:
   PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
   PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
-  # PYTHONUSERBASE: ${{ github.workspace }}/.local
   WORKON_HOME: ${{ github.workspace }}/.local/.venv
   PIPENV_NOSPIN: 'true'
 
@@ -73,6 +72,8 @@ jobs:
     needs:
       - build
     runs-on: ubuntu-latest
+    env:
+      PYTHONUSERBASE: ${{ github.workspace }}/.local
     strategy:
       matrix:
         python-version:
@@ -111,6 +112,8 @@ jobs:
       - build
     continue-on-error: True
     runs-on: ubuntu-latest
+    env:
+      PYTHONUSERBASE: ${{ github.workspace }}/.local
     strategy:
       matrix:
         python-version:
@@ -135,6 +138,8 @@ jobs:
   check:
     name: Code Analyse - Linux Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
+    env:
+      PYTHONUSERBASE: ${{ github.workspace }}/.local
     needs:
       - build
     strategy:
