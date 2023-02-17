@@ -18,7 +18,7 @@ env:
 jobs:
   check-tag:
     name: Check Git Tag
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     outputs:
       release-type: ${{ steps.check-tag.outputs.run_jobs }}
     steps:
@@ -33,7 +33,7 @@ jobs:
 
   build:
     name: Build - Linux Python ${{ matrix.python-version }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         python-version:
@@ -72,7 +72,7 @@ jobs:
     name: Tests - Linux Python ${{ matrix.python-version }}
     needs:
       - build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         python-version:
@@ -110,7 +110,7 @@ jobs:
     needs:
       - build
     continue-on-error: True
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         python-version:
@@ -134,7 +134,7 @@ jobs:
         run: pipenv run pip-audit
   check:
     name: Code Analyse - Linux Python ${{ matrix.python-version }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs:
       - build
     strategy:
@@ -172,7 +172,7 @@ jobs:
           pipenv run pylint $(git ls-files '*.py')
   coverage:
     name: Coverage - Linux Python 3.8
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs:
       - tests
     steps:
@@ -220,7 +220,7 @@ jobs:
       - check
       - coverage
     if: needs.check-tag.outputs.release-type == 'release' || needs.check-tag.outputs.release-type == 'prerelease'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Update system path
         run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
