@@ -143,7 +143,7 @@ jobs:
       PYTHONUSERBASE: ${{ github.workspace }}/.local
     runs-on: ubuntu-latest
     needs:
-      - build
+      - tests
     strategy:
       matrix:
         python-version:
@@ -181,7 +181,7 @@ jobs:
     name: Coverage - Linux Python 3.8
     runs-on: ubuntu-latest
     needs:
-      - tests
+      - check
     steps:
       - name: Update system path
         run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
