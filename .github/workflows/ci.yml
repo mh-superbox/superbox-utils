@@ -42,7 +42,7 @@ jobs:
           - '3.10'
     steps:
       - name: Update system path
-        run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
+        run: echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
       - name: Check out repository
         uses: actions/checkout@v3.3.0
       - name: Cache virtualenv
@@ -81,7 +81,7 @@ jobs:
           - '3.10'
     steps:
       - name: Update system path
-        run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
+        run: echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
       - name: Check out repository
         uses: actions/checkout@v3.3.0
       - name: Cache virtualenv
@@ -119,7 +119,7 @@ jobs:
           - '3.10'
     steps:
       - name: Update system path
-        run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
+        run: echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
       - name: Check out repository
         uses: actions/checkout@v3.3.0
       - name: Cache virtualenv
@@ -145,7 +145,7 @@ jobs:
           - '3.10'
     steps:
       - name: Update system path
-        run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
+        run: echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
       - name: Check out repository
         uses: actions/checkout@v3.3.0
       - name: Cache virtualenv
@@ -177,7 +177,7 @@ jobs:
       - tests
     steps:
       - name: Update system path
-        run: echo "${{ env.PYTHONUSERBASE }}/bin" >> $GITHUB_PATH
+        run: echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
       - name: Check out repository
         uses: actions/checkout@v3.3.0
       - name: Cache virtualenv
