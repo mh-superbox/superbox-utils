@@ -224,7 +224,7 @@ jobs:
       - tests
       - check
       - coverage
-    if: ${{ env.STATE_release_type }} == 'release' || ${{ env.STATE_release_type }} == 'prerelease'
+    if: ${{ STATE_release_type }} == 'release' || ${{ STATE_release_type }} == 'prerelease'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -234,7 +234,7 @@ jobs:
           python -m pip install build twine
           python -m build
       - name: Publish test package
-        if: ${{ env.STATE_release_type }} == 'prerelease'
+        if: ${{ STATE_release_type }} == 'prerelease'
         uses: pypa/gh-action-pypi-publish@release/v1.6.4
         with:
           user: __token__
@@ -242,7 +242,7 @@ jobs:
           repository_url: https://test.pypi.org/legacy/
           verbose: True
       - name: Publish package
-        if: ${{ env.STATE_release_type }} == 'release'
+        if: ${{ STATE_release_type }} == 'release'
         uses: pypa/gh-action-pypi-publish@release/v1.6.4
         with:
           user: __token__
