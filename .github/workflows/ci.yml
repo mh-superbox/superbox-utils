@@ -116,7 +116,7 @@ jobs:
     name: Coverage
     runs-on: ubuntu-latest
     needs:
-      - check
+      - tests
     steps:
       - name: Check out repository
         uses: actions/checkout@v3.3.0
@@ -129,7 +129,7 @@ jobs:
       - name: Download coverage
         uses: actions/download-artifact@v3.0.2
         with:
-          name: python-coverage
+          name: python-3.8-coverage
       - name: Create coverage badge
         uses: tj-actions/coverage-badge-py@v1.8
       - name: Verify coverage badge changed
