@@ -2,7 +2,7 @@ from superbox_utils.dict.data_dict import DataDict
 
 
 class TestHappyPathDataDict:
-    def test_data_dict(self):
+    def test_data_dict(self) -> None:
         data_dict: DataDict = DataDict()
 
         data_dict["key"] = "value"

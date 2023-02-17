@@ -22,7 +22,7 @@ class LoggingConfig(ConfigLoaderMixin):
         """Get logging verbose level as integer."""
         return list(LOG_LEVEL).index(self.level)
 
-    def init(self, name: str, log: Optional[str], log_path: Path, verbose: int = 0):
+    def init(self, name: str, log: Optional[str], log_path: Path, verbose: int = 0) -> None:
         """Initialize logger handler and formatter.
 
         Parameters
@@ -57,7 +57,7 @@ class LoggingConfig(ConfigLoaderMixin):
 
         self.update_level(name, verbose)
 
-    def update_level(self, name: str, verbose: int):
+    def update_level(self, name: str, verbose: int) -> None:
         """Update the logging level in config data class.
 
         Parameters

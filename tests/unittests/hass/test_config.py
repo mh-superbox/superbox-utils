@@ -18,7 +18,7 @@ class TestHappyConfig:
         self,
         config: dict,
         expected: dict,
-    ):
+    ) -> None:
         home_assistant_config = HomeAssistantConfig()
         home_assistant_config.update(config)
 
@@ -43,7 +43,7 @@ class TestUnhappyConfig:
         self,
         config: dict,
         expected: str,
-    ):
+    ) -> None:
         with pytest.raises(ConfigException) as error:
             home_assistant_config = HomeAssistantConfig()
             home_assistant_config.update(config)

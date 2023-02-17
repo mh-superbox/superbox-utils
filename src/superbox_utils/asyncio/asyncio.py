@@ -1,8 +1,9 @@
 import asyncio
 import functools
+from typing import Callable
 
 
-def run_in_executor(_func):
+def run_in_executor(_func) -> Callable:
     """Run blocking code async."""
 
     @functools.wraps(_func)

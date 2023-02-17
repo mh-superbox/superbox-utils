@@ -17,7 +17,7 @@ class TestHappyPathLoader:
         ],
         indirect=["_content_to_file"],
     )
-    def test_yaml_loader_safe(self, _content_to_file: Path, expected: type):
+    def test_yaml_loader_safe(self, _content_to_file: Path, expected: type) -> None:
         yaml_data: Union[dict, list] = yaml_loader_safe(_content_to_file)
         assert isinstance(yaml_data, expected)
 
@@ -33,7 +33,7 @@ class TestUnHappyPathLoader:
         ],
         indirect=["_content_to_file"],
     )
-    def test_yaml_loader_safe(self, _content_to_file: Path, expected: str):
+    def test_yaml_loader_safe(self, _content_to_file: Path, expected: str) -> None:
         with pytest.raises(ConfigException) as error:
             yaml_loader_safe(_content_to_file)
 

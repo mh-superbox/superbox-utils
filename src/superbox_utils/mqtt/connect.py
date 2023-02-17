@@ -16,7 +16,9 @@ class LogPrefix:
     MQTT: Final[str] = "[MQTT]"
 
 
-async def mqtt_connect(mqtt_config: MqttConfig, logger: logging.Logger, mqtt_client_id: str, callback: Callable):
+async def mqtt_connect(
+    mqtt_config: MqttConfig, logger: logging.Logger, mqtt_client_id: str, callback: Callable
+) -> None:
     """Connect to MQTT broker and automatically rety on disconnect.
 
     Parameters

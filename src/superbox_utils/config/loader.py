@@ -27,7 +27,7 @@ class Validation:
 
 @dataclass
 class ConfigLoaderMixin:
-    def update(self, new):
+    def update(self, new) -> None:
         """Update and validate config data class with settings from a dictionary.
 
         Parameters
@@ -46,7 +46,7 @@ class ConfigLoaderMixin:
 
         self.validate()
 
-    def update_from_yaml_file(self, config_path: Path):
+    def update_from_yaml_file(self, config_path: Path) -> None:
         """Update and validate config data class with settings from a YAML file.
 
         Parameters
@@ -60,7 +60,7 @@ class ConfigLoaderMixin:
             if isinstance(yaml_data, dict):
                 self.update(yaml_data)
 
-    def validate(self):
+    def validate(self) -> None:
         """Validate config data class arguments."""
         for _field in dataclasses.fields(self):
             value: Any = getattr(self, _field.name)
