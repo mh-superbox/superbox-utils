@@ -11,7 +11,7 @@ on:
 env:
   PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
   PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
-  PYTHONUSERBASE: ${{ github.workspace }}/.local
+  # PYTHONUSERBASE: ${{ github.workspace }}/.local
   WORKON_HOME: ${{ github.workspace }}/.local/.venv
   PIPENV_NOSPIN: 'true'
 
@@ -55,7 +55,7 @@ jobs:
           key: python-${{ matrix.python-version }}-${{ hashFiles('Pipfile.lock') }}
       - name: Set up Python ${{ matrix.python-version }}
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v4.5.0
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install pipenv
