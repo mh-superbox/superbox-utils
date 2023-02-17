@@ -18,14 +18,16 @@ jobs:
   check-tag:
     name: Check Git Tag
     runs-on: ubuntu-latest
+    outputs:
+      release-type: ${{ steps.check-tag.outputs.run_jobs }}
     steps:
       - name: check tag ${{ github.ref }}
         id: check-tag
         run: |
           if [[ ${{ github.event.ref }} =~ ^refs\/tags\/20[0-9][0-9]\.[1-9]{1}[0-9]{0,}$ ]]; then
-            echo "release_type=release" >> $GITHUB_STATE
+            echo ::set-output name=run_jobs::release
           elif [[ ${{ github.event.ref }} =~ ^refs\/tags\/20[0-9][0-9]\.[1-9]{1}[0-9]{0,}b[1-9]{1}[0-9]{0,}$$ ]]; then
-            echo "release_type=prerelease" >> $GITHUB_STATE
+            echo ::set-output name=run_jobs::prerelease
           fi
 
   build:
@@ -224,7 +226,7 @@ jobs:
       - tests
       - check
       - coverage
-    if: ${{ STATE_release_type }} == 'release' || ${{ STATE_release_type }} == 'prerelease'
+    if: needs.check-tag.outputs.release-type == 'release' || needs.check-tag.outputs.release-type == 'prerelease'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -234,7 +236,7 @@ jobs:
           python -m pip install build twine
           python -m build
       - name: Publish test package
-        if: ${{ STATE_release_type }} == 'prerelease'
+        if: needs.check-tag.outputs.release-type == 'prerelease'
         uses: pypa/gh-action-pypi-publish@release/v1.6.4
         with:
           user: __token__
@@ -242,7 +244,7 @@ jobs:
           repository_url: https://test.pypi.org/legacy/
           verbose: True
       - name: Publish package
-        if: ${{ STATE_release_type }} == 'release'
+        if: needs.check-tag.outputs.release-type == 'release'
         uses: pypa/gh-action-pypi-publish@release/v1.6.4
         with:
           user: __token__
