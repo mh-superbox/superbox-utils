@@ -9,6 +9,7 @@ on:
       - "*"
 
 env:
+  MYPY_FORCE_COLOR: 1
   PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
   PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
   PYTHONUSERBASE: ${{ github.workspace }}/.local
@@ -236,7 +237,7 @@ jobs:
           key: python-${{ matrix.python-version }}-${{ hashFiles('Pipfile.lock') }}
       - name: Build package
         run: |
-          python -m pip install build --user
+          python -m pip install build twine
           python -m build
       - name: Publish test package
         if: needs.check-tag.outputs.release-type == 'prerelease'
@@ -245,7 +246,7 @@ jobs:
           user: __token__
           password: ${{ secrets.PYPI_TEST_API_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
-          verbose: true
+          verbose: True
       - name: Publish package
         if: needs.check-tag.outputs.release-type == 'release'
         uses: pypa/gh-action-pypi-publish@release/v1
