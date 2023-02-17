@@ -11,7 +11,6 @@ on:
 env:
   PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
   PIPENV_CACHE_DIR: ${{ github.workspace }}/.cache/pipenv
-  # PYTHONUSERBASE: ${{ github.workspace }}/.local
   WORKON_HOME: ${{ github.workspace }}/.local/.venv
   PIPENV_NOSPIN: 'true'
 
@@ -19,16 +18,14 @@ jobs:
   check-tag:
     name: Check Git Tag
     runs-on: ubuntu-latest
-    outputs:
-      release-type: ${{ steps.check-tag.outputs.run_jobs }}
     steps:
       - name: check tag ${{ github.ref }}
         id: check-tag
         run: |
           if [[ ${{ github.event.ref }} =~ ^refs\/tags\/20[0-9][0-9]\.[1-9]{1}[0-9]{0,}$ ]]; then
-            echo ::set-output name=run_jobs::release
+            echo "release_type=release" >> $GITHUB_STATE
           elif [[ ${{ github.event.ref }} =~ ^refs\/tags\/20[0-9][0-9]\.[1-9]{1}[0-9]{0,}b[1-9]{1}[0-9]{0,}$$ ]]; then
-            echo ::set-output name=run_jobs::prerelease
+            echo "release_type=prerelease" >> $GITHUB_STATE
           fi
 
   build:
@@ -227,7 +224,7 @@ jobs:
       - tests
       - check
       - coverage
-    if: needs.check-tag.outputs.release-type == 'release' || needs.check-tag.outputs.release-type == 'prerelease'
+    if: env.STATE_release_type == 'release' || env.STATE_release_type == 'prerelease'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -237,7 +234,7 @@ jobs:
           python -m pip install build twine
           python -m build
       - name: Publish test package
-        if: needs.check-tag.outputs.release-type == 'prerelease'
+        if: env.STATE_release_type == 'prerelease'
         uses: pypa/gh-action-pypi-publish@release/v1.6.4
         with:
           user: __token__
@@ -245,7 +242,7 @@ jobs:
           repository_url: https://test.pypi.org/legacy/
           verbose: True
       - name: Publish package
-        if: needs.check-tag.outputs.release-type == 'release'
+        if: env.STATE_release_type == 'release'
         uses: pypa/gh-action-pypi-publish@release/v1.6.4
         with:
           user: __token__
