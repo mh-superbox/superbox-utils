@@ -4,4 +4,4 @@
 
 # Superbox Utils
 
-Utilities for Superbox Python Packages.
+Utilities for superbox python packages.
