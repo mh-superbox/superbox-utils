@@ -15,7 +15,7 @@ def init_argparse(description: str) -> argparse.ArgumentParser:
     -------
     ArgumentParser
     """
-    parser: argparse.ArgumentParser = argparse.ArgumentParser(description)
+    parser: argparse.ArgumentParser = argparse.ArgumentParser(description=description)
 
     parser.add_argument("-l", "--log", choices=["file", "systemd"], help="set log handler to file or systemd")
     parser.add_argument(
