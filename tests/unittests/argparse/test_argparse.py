@@ -13,5 +13,5 @@ class TestHappyPathArgparse:
         parser: argparse.ArgumentParser = init_argparse(description)
         args: argparse.Namespace = parser.parse_args(arguments)
 
-        assert parser.prog == description
+        assert parser.description == description
         assert str(args) == expected
