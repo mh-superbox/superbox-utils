@@ -8,9 +8,10 @@ from typing import Optional
 
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.config.loader import ConfigLoaderMixin
-from superbox_utils.logging import DATETIME_LOG_FORMAT
-from superbox_utils.logging import DEFAULT_LOG_FORMAT
+from superbox_utils.logging import FILE_LOG_FORMAT
 from superbox_utils.logging import LOG_LEVEL
+from superbox_utils.logging import STDOUT_LOG_FORMAT
+from superbox_utils.logging import SYSTEMD_LOG_FORMAT
 
 
 @dataclass
@@ -30,7 +31,7 @@ class LoggingConfig(ConfigLoaderMixin):
         name: str
             The logger name.
         log: str
-            set log handler to file or systemd.
+            set log handler to systemd, stdout or file.
         log_path: Path
             custom log path.
         verbose: int
@@ -41,18 +42,22 @@ class LoggingConfig(ConfigLoaderMixin):
 
         c_handler = logging.StreamHandler()
 
+        # TODO: Updated tests!
         if log == "systemd":
-            c_handler.setFormatter(logging.Formatter(DEFAULT_LOG_FORMAT))
+            c_handler.setFormatter(logging.Formatter(SYSTEMD_LOG_FORMAT))
+            logger.addHandler(c_handler)
+        elif log == "stdout":
+            c_handler.setFormatter(logging.Formatter(STDOUT_LOG_FORMAT))
             logger.addHandler(c_handler)
         elif log == "file":
             logger.addHandler(c_handler)
             log_path.mkdir(exist_ok=True, parents=True)
 
             f_handler = logging.FileHandler(log_path / f"{name}.log")
-            f_handler.setFormatter(logging.Formatter(DATETIME_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
+            f_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
             logger.addHandler(f_handler)
         else:
-            c_handler.setFormatter(logging.Formatter(DATETIME_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
+            c_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
             logger.addHandler(c_handler)
 
         self.update_level(name, verbose)
