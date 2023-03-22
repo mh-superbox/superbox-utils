@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Optional
 
 import pytest
-from _pytest.capture import CaptureFixture
+from _pytest.capture import CaptureFixture  # pylint: disable=import-private-name
 from superbox_utils.config.exception import ConfigException
 from superbox_utils.logging.config import LoggingConfig
 
