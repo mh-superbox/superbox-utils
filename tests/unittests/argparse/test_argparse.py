@@ -7,7 +7,7 @@ from superbox_utils.argparse import init_argparse
 class TestHappyPathArgparse:
     @pytest.mark.parametrize(
         "description, arguments, expected",
-        [("DESCRIPTION", ["-vv"], "Namespace(log=None, verbose=2)")],
+        [("DESCRIPTION", ["-vv"], "Namespace(log='stdout', verbose=2)")],
     )
     def test_init_argparse(self, description: str, arguments: list, expected: str) -> None:
         parser: argparse.ArgumentParser = init_argparse(description)
