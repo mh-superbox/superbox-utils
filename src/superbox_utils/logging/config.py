@@ -42,7 +42,6 @@ class LoggingConfig(ConfigLoaderMixin):
 
         c_handler = logging.StreamHandler()
 
-        # TODO: Updated tests!
         if log == "systemd":
             c_handler.setFormatter(logging.Formatter(SYSTEMD_LOG_FORMAT))
             logger.addHandler(c_handler)
