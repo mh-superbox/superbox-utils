@@ -1,9 +1,7 @@
-# pylint: disable=import-private-name
-
 from pathlib import Path
 
 import pytest
-from _pytest.fixtures import SubRequest
+from _pytest.fixtures import SubRequest  # pylint: disable=import-private-name
 
 
 @pytest.fixture()
