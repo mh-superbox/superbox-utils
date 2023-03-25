@@ -12,6 +12,7 @@ from superbox_utils.logging import FILE_LOG_FORMAT
 from superbox_utils.logging import LOG_LEVEL
 from superbox_utils.logging import STDOUT_LOG_FORMAT
 from superbox_utils.logging import SYSTEMD_LOG_FORMAT
+from superbox_utils.logging import handler
 
 
 @dataclass
@@ -40,24 +41,24 @@ class LoggingConfig(ConfigLoaderMixin):
         logger: logging.Logger = logging.getLogger(name)
         logger.setLevel(LOG_LEVEL["info"])
 
-        c_handler = logging.StreamHandler()
-
         if log == "systemd":
-            c_handler.setFormatter(logging.Formatter(SYSTEMD_LOG_FORMAT))
-            logger.addHandler(c_handler)
+            systemd_handler = handler.SystemdHandler()
+            systemd_handler.setFormatter(logging.Formatter(SYSTEMD_LOG_FORMAT))
+            logger.addHandler(systemd_handler)
         elif log == "stdout":
-            c_handler.setFormatter(logging.Formatter(STDOUT_LOG_FORMAT))
-            logger.addHandler(c_handler)
+            stdout_handler: logging.Handler = logging.StreamHandler()
+            stdout_handler.setFormatter(logging.Formatter(STDOUT_LOG_FORMAT))
+            logger.addHandler(stdout_handler)
         elif log == "file":
-            logger.addHandler(c_handler)
             log_path.mkdir(exist_ok=True, parents=True)
 
-            f_handler = logging.FileHandler(log_path / f"{name}.log")
-            f_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
-            logger.addHandler(f_handler)
+            file_handler = logging.FileHandler(log_path / f"{name}.log")
+            file_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
+            logger.addHandler(file_handler)
         else:
-            c_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
-            logger.addHandler(c_handler)
+            default_handler: logging.Handler = logging.StreamHandler()
+            default_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
+            logger.addHandler(default_handler)
 
         self.update_level(name, verbose)
 

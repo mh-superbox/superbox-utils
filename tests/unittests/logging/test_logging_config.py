@@ -14,7 +14,7 @@ class TestHappyLoggingConfig:
     @pytest.mark.parametrize(
         "config, log, expected",
         [
-            ({"level": "error"}, "systemd", {"level": "error", "verbose": 0, "message": r"^ERROR \| MOCKED ERROR\n$"}),
+            ({"level": "error"}, "systemd", {"level": "error", "verbose": 0, "message": r"^<3>MOCKED ERROR\n$"}),
             ({"level": "error"}, "stdout", {"level": "error", "verbose": 0, "message": r"^MOCKED ERROR\n$"}),
             (
                 {"level": "warning"},
@@ -61,8 +61,7 @@ class TestHappyLoggingConfig:
 
         if log == "file":
             assert log_file.exists()
-            re.compile(expected["message"]).search(log_file.read_text())
-            assert re.compile(r"MOCKED ERROR").search(capsys.readouterr().err)
+            assert re.compile(expected["message"]).search(log_file.read_text())
         else:
             assert not log_file.exists()
             assert re.compile(expected["message"]).search(capsys.readouterr().err)
