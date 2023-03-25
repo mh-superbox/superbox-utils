@@ -1,5 +1,3 @@
-import json
-
 import yaml  # type: ignore
 from yaml import Loader
 
@@ -13,20 +11,20 @@ class Dumper(yaml.Dumper):  # pylint: disable=too-many-ancestors
 
 
 def yaml_dumper(content: str) -> str:
-    """Convert a string into a YAML stream.
+    """Convert a JSON string into a YAML string.
 
     Parameters
     ----------
     content: str
-        Python object as string
+        JSON content as string
 
     Returns
     -------
     str:
-        YAML stream as string
+        YAML content as string
     """
     return yaml.dump(
-        yaml.load(json.dumps(content), Loader=Loader),
+        yaml.load(content, Loader=Loader),
         Dumper=Dumper,
         default_flow_style=False,
     )
