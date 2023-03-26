@@ -13,5 +13,4 @@ class TestHappyPathDumper:
         ],
     )
     def test_yaml_dumper(self, json_content: str, expected: str) -> None:
-        print(yaml_dumper(json_content))
         assert yaml_dumper(json_content) == expected
