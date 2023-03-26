@@ -12,6 +12,7 @@ from superbox_utils.logging import FILE_LOG_FORMAT
 from superbox_utils.logging import LOG_LEVEL
 from superbox_utils.logging import STDOUT_LOG_FORMAT
 from superbox_utils.logging import SYSTEMD_LOG_FORMAT
+from superbox_utils.logging import handler
 
 
 @dataclass
@@ -23,50 +24,50 @@ class LoggingConfig(ConfigLoaderMixin):
         """Get logging verbose level as integer."""
         return list(LOG_LEVEL).index(self.level)
 
-    def init(self, name: str, log: Optional[str], log_path: Path, verbose: int = 0) -> None:
+    def init(self, log: Optional[str], log_path: Path, name: Optional[str] = None, verbose: int = 0) -> None:
         """Initialize logger handler and formatter.
 
         Parameters
         ----------
-        name: str
-            The logger name.
         log: str
             set log handler to systemd, stdout or file.
         log_path: Path
             custom log path.
+        name: str, optional
+            The logger name.
         verbose: int
             Logging verbose level as integer.
         """
         logger: logging.Logger = logging.getLogger(name)
         logger.setLevel(LOG_LEVEL["info"])
 
-        c_handler = logging.StreamHandler()
-
         if log == "systemd":
-            c_handler.setFormatter(logging.Formatter(SYSTEMD_LOG_FORMAT))
-            logger.addHandler(c_handler)
+            systemd_handler = handler.SystemdHandler()
+            systemd_handler.setFormatter(logging.Formatter(SYSTEMD_LOG_FORMAT))
+            logger.addHandler(systemd_handler)
         elif log == "stdout":
-            c_handler.setFormatter(logging.Formatter(STDOUT_LOG_FORMAT))
-            logger.addHandler(c_handler)
+            stdout_handler: logging.Handler = logging.StreamHandler()
+            stdout_handler.setFormatter(logging.Formatter(STDOUT_LOG_FORMAT))
+            logger.addHandler(stdout_handler)
         elif log == "file":
-            logger.addHandler(c_handler)
             log_path.mkdir(exist_ok=True, parents=True)
 
-            f_handler = logging.FileHandler(log_path / f"{name}.log")
-            f_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
-            logger.addHandler(f_handler)
+            file_handler = logging.FileHandler(log_path / f"{name}.log")
+            file_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
+            logger.addHandler(file_handler)
         else:
-            c_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
-            logger.addHandler(c_handler)
+            default_handler: logging.Handler = logging.StreamHandler()
+            default_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S"))
+            logger.addHandler(default_handler)
 
         self.update_level(name, verbose)
 
-    def update_level(self, name: str, verbose: int) -> None:
+    def update_level(self, name: Optional[str], verbose: int) -> None:
         """Update the logging level in config data class.
 
         Parameters
         ----------
-        name: str
+        name: str, optional
             The logger name.
         verbose: int
             Logging verbose level as integer.

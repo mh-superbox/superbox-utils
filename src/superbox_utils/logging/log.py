@@ -3,7 +3,7 @@ from collections import OrderedDict
 from typing import Dict
 from typing import Final
 
-SYSTEMD_LOG_FORMAT: Final[str] = "%(levelname)s | %(message)s"
+SYSTEMD_LOG_FORMAT: Final[str] = "%(message)s"
 STDOUT_LOG_FORMAT: Final[str] = "%(message)s"
 FILE_LOG_FORMAT: Final[str] = "%(asctime)s | %(levelname)s | %(message)s"
 
