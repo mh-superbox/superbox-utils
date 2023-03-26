@@ -5,7 +5,7 @@ from setuptools import setup
 
 dependencies: dict = {}
 
-with Path("requirements.txt").open(encoding="utf-8") as reqs:
+with open("requirements.txt", encoding="utf-8") as reqs:
     # pylint: disable=invalid-name
     group: Optional[str] = None
 
