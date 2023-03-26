@@ -6,7 +6,7 @@ from setuptools import setup
 dependencies: dict = {}
 
 with Path("requirements.txt").open(encoding="utf-8") as reqs:
-    group: Optional[str] = None
+    group: Optional[str] = None  # pylint: disable=invalid-name
 
     for line in reqs.read().split("\n"):
         if not line:
