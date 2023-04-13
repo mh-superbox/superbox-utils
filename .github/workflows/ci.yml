@@ -6,7 +6,7 @@ on:
       - dev*
       - main
     tags:
-      - "*"
+      - '*'
 
 jobs:
   check-tag:
@@ -33,6 +33,7 @@ jobs:
           - '3.8'
           - '3.9'
           - '3.10'
+          - '3.11'
     steps:
       - name: Check out repository
         uses: actions/checkout@v3.3.0
@@ -44,10 +45,13 @@ jobs:
         run: |
           python --version
           python -m pip install --user --upgrade pip
-          python -m pip install --user pipenv
-          pipenv install --deploy --dev
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
       - name: Run unit tests
-        run: pipenv run pytest --cov=src --cov-report=term-missing --junitxml=junit/test-results.xml --cov-report=xml
+        run: pytest --cov=src --cov-report=term-missing --junitxml=junit/test-results.xml --cov-report=xml
       - name: Upload coverage
         uses: actions/upload-artifact@v3.1.2
         with:
@@ -70,10 +74,13 @@ jobs:
         run: |
           python --version
           python -m pip install --user --upgrade pip
-          python -m pip install --user pipenv
-          pipenv install --deploy --dev
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
       - name: Audit packages
-        run: pipenv run pip-audit
+        run: pip-audit
   check:
     name: Code Analyse - Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
@@ -85,6 +92,7 @@ jobs:
           - '3.8'
           - '3.9'
           - '3.10'
+          - '3.11'
     steps:
       - name: Check out repository
         uses: actions/checkout@v3.3.0
@@ -96,22 +104,25 @@ jobs:
         run: |
           python --version
           python -m pip install --user --upgrade pip
-          python -m pip install --user pipenv
-          pipenv install --deploy --dev
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
       - name: Check code format with black
         run: |
-          pipenv run black --version
-          pipenv run black --diff --check $(git ls-files '*.py')
+          black --version
+          black --diff --check $(git ls-files '*.py')
       - name: Lint with flake8
         run: |
-          pipenv run flake8 --version
-          pipenv run flake8 --show-source --statistics $(git ls-files '*.py')
+          flake8 --version
+          flake8 --show-source --statistics $(git ls-files '*.py')
       - name: Lint with mypy
-        run: pipenv run mypy $(git ls-files '*.py')
+        run: mypy $(git ls-files '*.py')
       - name: Lint with pylint
         run: |
-          pipenv run pylint --version
-          pipenv run pylint $(git ls-files '*.py')
+          pylint --version
+          pylint $(git ls-files '*.py')
   coverage:
     name: Coverage
     runs-on: ubuntu-latest
@@ -120,12 +131,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3.3.0
-      - name: Install dependencies
-        run: |
-          python --version
-          python -m pip install --user --upgrade pip
-          python -m pip install --user pipenv
-          pipenv install --deploy --dev
       - name: Download coverage
         uses: actions/download-artifact@v3.0.2
         with:
