@@ -1,4 +1,4 @@
-[![license-url](https://img.shields.io/npm/l/make-coverage-badge.svg)](https://opensource.org/licenses/MIT)
+[![license-url](https://img.shields.io/badge/license-Apache%202-yellowgreen)](https://opensource.org/license/apache-2-0/)
 ![coverage-badge](https://raw.githubusercontent.com/mh-superbox/superbox-utils/main/coverage.svg)
 ![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)
 
