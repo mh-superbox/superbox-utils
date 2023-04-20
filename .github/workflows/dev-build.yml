@@ -20,8 +20,6 @@ jobs:
           echo "package_name=$(python setup.py --name)" >> $GITHUB_OUTPUT
           echo "package_alternate_name=$(echo $(python setup.py --name) | sed -r 's/-/_/g')" >> $GITHUB_OUTPUT
           echo "package_version=$(python setup.py --version)" >> $GITHUB_OUTPUT
-          echo $(python setup.py --name)
-          echo $(python setup.py --version)
       - name: Check tag ${{ github.ref_name }}
         id: check-tag
         run: |
