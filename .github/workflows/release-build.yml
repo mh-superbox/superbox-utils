@@ -13,12 +13,9 @@ jobs:
       package_name: ${{ steps.global_vars.outputs.package_name }}
       package_alternate_name: ${{ steps.global_vars.outputs.package_alternate_name }}
       package_version: ${{ steps.global_vars.outputs.package_version }}
-      release_type: ${{ steps.check-tag.outputs.release_type }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
-        with:
-          path: repository
       - name: Set global variables
         id: global_vars
         run: |
@@ -27,7 +24,6 @@ jobs:
           echo $(python setup.py --name)
           echo $(python setup.py --version)
       - name: Check tag ${{ github.ref_name }}
-        id: check-tag
         run: |
           tag_version="${{ github.ref_name }}"
 
