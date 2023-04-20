@@ -24,14 +24,16 @@ class LoggingConfig(ConfigLoaderMixin):
         """Get logging verbose level as integer."""
         return list(LOG_LEVEL).index(self.level)
 
-    def init(self, log: Optional[str], log_path: Path, name: Optional[str] = None, verbose: int = 0) -> None:
+    def init(
+        self, log: Optional[str], log_path: Optional[Path] = None, name: Optional[str] = None, verbose: int = 0
+    ) -> None:
         """Initialize logger handler and formatter.
 
         Parameters
         ----------
         log: str
             set log handler to systemd, stdout or file.
-        log_path: Path
+        log_path: Path, optional
             custom log path.
         name: str, optional
             The logger name.
@@ -49,7 +51,7 @@ class LoggingConfig(ConfigLoaderMixin):
             stdout_handler: logging.Handler = logging.StreamHandler()
             stdout_handler.setFormatter(logging.Formatter(STDOUT_LOG_FORMAT))
             logger.addHandler(stdout_handler)
-        elif log == "file":
+        elif log == "file" and log_path:
             log_path.mkdir(exist_ok=True, parents=True)
 
             file_handler = logging.FileHandler(log_path / f"{name}.log")

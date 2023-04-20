@@ -1,0 +1,54 @@
+name: Development build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  prepare_build:
+    name: Prepare build
+    runs-on: ubuntu-latest
+    outputs:
+      package_name: ${{ steps.global_vars.outputs.package_name }}
+      package_alternate_name: ${{ steps.global_vars.outputs.package_alternate_name }}
+      package_version: ${{ steps.global_vars.outputs.package_version }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Set global variables
+        id: global_vars
+        run: |
+          echo "package_name=$(python setup.py --name)" >> $GITHUB_OUTPUT
+          echo "package_alternate_name=$(echo $(python setup.py --name) | sed -r 's/-/_/g')" >> $GITHUB_OUTPUT
+          echo "package_version=$(python setup.py --version)" >> $GITHUB_OUTPUT
+      - name: Check tag ${{ github.ref_name }}
+        id: check-tag
+        run: |
+          ref_name="${{ github.ref_name }}"
+          tag_version="${ref_name/dev-/}"
+
+          if [ "${tag_version}" != "${{ steps.global_vars.outputs.package_version }}" ]; then
+            echo "Version number in package does not match tag! (${tag_version} vs. ${{ steps.global_vars.outputs.package_version }})."
+            exit 1
+          fi
+
+  build_python_package:
+    name: Build python package
+    needs:
+      - prepare_build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Build package
+        run: |
+          make build
+      - name: Upload compressed source file
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ needs.prepare_build.outputs.package_name }}-${{ needs.prepare_build.outputs.package_version }}.tar.gz
+          path: ${{ github.workspace }}/output/${{ needs.prepare_build.outputs.package_name }}-${{ needs.prepare_build.outputs.package_version }}.tar.gz  # yamllint disable-line rule:line-length
+      - name: Upload wheel file
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ needs.prepare_build.outputs.package_alternate_name }}-${{ needs.prepare_build.outputs.package_version }}-py3-none-any.whl  # yamllint disable-line rule:line-length
+          path: ${{ github.workspace }}/output/${{ needs.prepare_build.outputs.package_alternate_name }}-${{ needs.prepare_build.outputs.package_version }}-py3-none-any.whl  # yamllint disable-line rule:line-length
