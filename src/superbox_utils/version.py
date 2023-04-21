@@ -1,1 +1,3 @@
-__version__ = "2023.6"
+import os
+
+__version__ = os.environ.get("PACKAGE_VERSION", "2023.6")

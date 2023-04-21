@@ -1,16 +1,31 @@
-*.egg
-*.egg-info
-*.pyc
-*.swp
+# PyCharm
+.idea
+
+# macOS
 .DS_Store
 ._*
-coverage.xml
-.coverage
-.idea
+*.swp
+
+# cache
+*.pyc
+
+# virtuelenv
+.venv
+
+# GitHub Action
+/output/
+
+# checks
 .mypy_cache
 .pytest_cache
-.venv
-build/*
-dist/*
-test-results.xml
-tmp
+
+# coverage
+.coverage
+/coverage.xml
+/junit/test-results.xml
+
+# build package
+*.egg
+*.egg-info
+/build/
+/dist/
