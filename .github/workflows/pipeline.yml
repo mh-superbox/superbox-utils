@@ -11,10 +11,16 @@ jobs:
     with:
       python-version: 3.8 3.9 3.10 3.11
 
+  validate:
+    name: Validate
+    uses: ./.github/workflows/validate-version.yml
+    needs:
+      - parameters
+    with:
+      latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
+      package-version: ${{ needs.parameters.outputs.package-version }}
+
   unit-testing:
-    # if: |
-    #   github.ref == 'pull_request'
-    #   || github.ref_type == 'tag'
     name: Unit testing
     uses: ./.github/workflows/unit-testing.yml
     needs:
@@ -65,6 +71,7 @@ jobs:
     uses: ./.github/workflows/release.yml
     needs:
       - parameters
+      - validate
       - build
     with:
       package-name: ${{ needs.parameters.outputs.package-name }}
