@@ -45,19 +45,24 @@ jobs:
 
           if len('${{ github.ref_name }}'.split(' ')) > 2:
             version_dev = True
-
-          package_name = subprocess.run("python setup.py --name", shell=True, capture_output=True).stdout.decode().strip()
+          
+          result_package_name = subprocess.run("python setup.py --name", shell=True, capture_output=True)
+          package_name = result_package_name.stdout.decode().strip()
           package_alternate_name = package_name.replace("-", "_")
-          package_version = subprocess.run("python setup.py --version", shell=True, capture_output=True).stdout.decode().strip()
+          
+          result_package_version = subprocess.run("python setup.py --version", shell=True, capture_output=True)
+          package_version = result_package_version.stdout.decode().strip()
 
           if not version_dev:
             package_version += ".dev${{ github.run_number }}"
 
           with open(environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as gho:
-              gho.write(f"python-version={python_version!s}\n")
-              gho.write(f"latest-python-version={latest_python_version!s}\n")
-              gho.write(f"package-name={package_name!s}\n")
-              gho.write(f"package-alternate-name={package_alternate_name!s}\n")
-              gho.write(f"package-version={package_version!s}\n")
+              gho.write(
+                f"python-version={python_version!s}\n"
+                f"latest-python-version={latest_python_version!s}\n"
+                f"package-name={package_name!s}\n"
+                f"package-alternate-name={package_alternate_name!s}\n"
+                f"package-version={package_version!s}\n"
+              )
 
           print(Path(environ['GITHUB_OUTPUT']).read_text())
