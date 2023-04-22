@@ -1,5 +1,5 @@
 # install:required
-pyyaml==6.0
+pyyaml~=6.0
 
 # install:mqtt
 asyncio-mqtt==0.16.1

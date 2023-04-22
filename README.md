@@ -7,4 +7,7 @@
 
 # Superbox Utils
 
-Utilities for superbox python packages.
+Utilities for superbox python packages:
+
+* [Unipi Control](https://github.com/superbox-dev/unipi-control)
+* [UniFi Tools](https://github.com/superbox-dev/unifi-tools)

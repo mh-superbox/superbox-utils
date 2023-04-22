@@ -1,0 +1,15 @@
+name: Development
+
+on:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: Tests
+    uses: superbox-dev/python-package-workflows/.github/workflows/tests.yml@main
+
+  build_python_package:
+    name: Build python package
+    uses: superbox-dev/python-package-workflows/.github/workflows/build-python-package.yml@main
+    needs:
+      - tests
