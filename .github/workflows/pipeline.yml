@@ -22,3 +22,5 @@ jobs:
     uses: ./.github/workflows/coverage.yml
     needs:
       - unit-testing
+    with:
+      latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}

@@ -15,7 +15,11 @@ jobs:
       - name: Download coverage
         uses: actions/download-artifact@v3
         with:
-          name: coverage-python-${{ needs.config.outputs.latest_python }}
+          name: coverage-python-${{ needs.config.outputs.latest-python-version }}
+
+      - name: test
+        run: |
+          ls -la .
 
       - name: Create coverage badge
         uses: tj-actions/coverage-badge-py@v2
