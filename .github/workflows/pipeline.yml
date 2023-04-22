@@ -52,6 +52,8 @@ jobs:
     uses: ./.github/workflows/build-python-package.yml
     needs:
       - parameters
+      - unit-testing
+      - code-analyse
     with:
       latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
       package-name: ${{ needs.parameters.outputs.package-name }}
