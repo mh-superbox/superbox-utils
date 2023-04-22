@@ -17,3 +17,8 @@ jobs:
       - parameters
     with:
       python-version: ${{ needs.parameters.outputs.python-version }}
+
+  coverage:
+    uses: ./.github/workflows/coverage.yml
+  needs:
+    - unit-testing

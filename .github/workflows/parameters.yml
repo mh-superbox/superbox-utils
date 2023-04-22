@@ -10,6 +10,8 @@ on:
     outputs:
       python-version:
         value: ${{ jobs.set-up-parameters.outputs.python-version }}
+      latest-python-version:
+        value: ${{ jobs.set-up-parameters.outputs.latest-python-version }}
 
 jobs:
   set-up-parameters:
@@ -17,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       python-version: ${{ steps.params.outputs.python-version }}
+      latest-python-version: ${{ steps.params.outputs.latest-python-version }}
     steps:
       - name: Generate 'params'
         id: params
@@ -25,8 +28,12 @@ jobs:
           from os import environ
 
           python_version = '${{ inputs.python-version }}'.split(' ')
+          python_version.sort()
+          latest_python_version = python_version[-1]
 
           with open(environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as gho:
               gho.write(f"python-version={python_version!s}\n")
+              gho.write(f"latest-python-version={latest_python_version!s}\n")
           
           print("Python version:", python_version)
+          print("Latest python version:", latest_python_version)
