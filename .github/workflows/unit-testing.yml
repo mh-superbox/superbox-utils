@@ -1,0 +1,50 @@
+name: Unit testing
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+
+jobs:
+  unit-testing:
+    name: Unit tests using Python ${{ matrix.python }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ${{ inputs.python-version }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache virtualenv for Python ${{ matrix.python-version }}
+        uses: syphar/restore-virtualenv@v1
+        id: cache-virtualenv
+
+      - name: Cache pip download for Python ${{ matrix.python_version }}
+        uses: syphar/restore-pip-download-cache@v1
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+      - name: Install requirements
+        run: |
+          pip install \
+            -r requirements.txt \
+            -r requirements-dev.txt
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+      - name: Run unit tests
+        run: |
+          pytest \
+            --cov=src \
+            --cov-report=term-missing \
+            --junitxml=junit/test-results.xml \
+            --cov-report=xml
