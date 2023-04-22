@@ -12,9 +12,9 @@ jobs:
       python-version: 3.8 3.9 3.10 3.11
 
   unit-testing:
-    #if: |
-    #  github.ref == 'pull_request'
-    #  || github.ref_type == 'tag'
+    # if: |
+    #   github.ref == 'pull_request'
+    #   || github.ref_type == 'tag'
     name: Unit testing
     uses: ./.github/workflows/unit-testing.yml
     needs:

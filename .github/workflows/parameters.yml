@@ -54,11 +54,11 @@ jobs:
 
           if len('${{ github.ref_name }}'.split(' ')) > 2:
             version_dev = True
-          
+
           result_package_name = subprocess.run("python setup.py --name", shell=True, capture_output=True)
           package_name = result_package_name.stdout.decode().strip()
           package_alternate_name = package_name.replace("-", "_")
-          
+
           result_package_version = subprocess.run("python setup.py --version", shell=True, capture_output=True)
           package_version = result_package_version.stdout.decode().strip()
 
