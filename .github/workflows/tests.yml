@@ -1,10 +1,46 @@
 name: Tests
 
 on:
+  workflow_call:
   workflow_dispatch:
   pull_request:
 
 jobs:
-  tests:
-    name: Tests
-    uses: superbox-dev/python-package-workflows/.github/workflows/tests.yml@main
+  parameters:
+    name: Parameters
+    uses: ./.github/workflows/parameters.yml
+    with:
+      python-version: 3.8 3.9 3.10 3.11
+
+  unit-testing:
+    name: Unit testing
+    uses: ./.github/workflows/unit-testing.yml
+    needs:
+      - parameters
+    with:
+      python-version: ${{ needs.parameters.outputs.python-version }}
+
+  coverage:
+    name: Coverage
+    uses: ./.github/workflows/coverage.yml
+    needs:
+      - parameters
+      - unit-testing
+    with:
+      latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
+
+  code-analyse:
+    name: Code analyse
+    uses: ./.github/workflows/code-analyse.yml
+    needs:
+      - parameters
+    with:
+      python-version: ${{ needs.parameters.outputs.python-version }}
+
+  security:
+    name: Security
+    uses: ./.github/workflows/security.yml
+    needs:
+      - parameters
+    with:
+      latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
