@@ -75,4 +75,3 @@ jobs:
               )
 
           print(Path(environ['GITHUB_OUTPUT']).read_text())
-
