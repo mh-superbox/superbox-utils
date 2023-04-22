@@ -8,9 +8,8 @@ on:
         default: '3.8 3.9 3.10 3.11'
         type: string
     outputs:
-      params:
-        description: Parameters to be used in other jobs.
-        value: ${{ jobs.set-up-parameters.outputs.params }}
+      python-version:
+        value: ${{ jobs.set-up-parameters.outputs.python-version }}
 
 jobs:
   set-up-parameters:
@@ -24,13 +23,11 @@ jobs:
         shell: python
         run: |
           from os import environ
+          import json
 
-          params = {
-            'python-version': '${{ inputs.python-version }}'.split(' '),
-          }
+          python_version = json.dumps('${{ inputs.python-version }}'.split(' '))
 
           with open(environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as gho:
-              gho.write(f"params={params!s}\n")
+              gho.write(f"python-version={python_version!s}\n")
           
-          print("Parameters:")
-          print(params)
+          print("Python version:", python_version)

@@ -16,4 +16,4 @@ jobs:
     needs:
       - parameters
     with:
-      python-version: ${{ fromJson(needs.parameters.outputs.params).python-version }}
+      python-version: ${{ needs.parameters.outputs.python-version }}
