@@ -26,5 +26,6 @@ jobs:
         with:
           name: ${{ inputs.package-name }}-${{ inputs.package-version }}
           # yamllint disable rule:line-length
-          files: *
+          files: |
+            *
           # yamllint enable rule:line-length
