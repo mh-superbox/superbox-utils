@@ -10,10 +10,11 @@ on:
     outputs:
       params:
         description: Parameters to be used in other jobs.
-        value: ${{ jobs.parameters.outputs.params }}
+        value: ${{ jobs.set-up-parameters.outputs.params }}
 
 jobs:
-  parameters:
+  set-up-parameters:
+    name: Set up parameters
     runs-on: ubuntu-latest
     outputs:
       params: ${{ steps.params.outputs.params }}
