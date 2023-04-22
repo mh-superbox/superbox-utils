@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  workflow_call:
+    inputs:
+      package-name:
+        required: True
+        type: string
+      package-version:
+        required: True
+        type: string
+
+jobs:
+  release-on-github:
+    name: Release on GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download package files
+        uses: actions/download-artifact@v3
+        with:
+          name: python-package
+
+      - name: test
+        run: |
+          ls -la .
+          ls -la python-package
+
+      - name: Release files
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ inputs.package-name }}-${{ inputs.package-version }}
+          # yamllint disable rule:line-length
+          files: |
+            **/python-package/*
+          # yamllint enable rule:line-length
