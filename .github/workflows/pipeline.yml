@@ -7,7 +7,7 @@ jobs:
   parameters:
     uses: ./.github/workflows/parameters.yml
     with:
-      python_version_list: '3.8 3.9 3.10 3.11'
+      python-version: '3.8 3.9 3.10 3.11'
 
   unit-testing:
     uses: ./.github/workflows/unit-testing.yml
