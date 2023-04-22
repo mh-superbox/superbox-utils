@@ -22,10 +22,10 @@ jobs:
     needs:
       - build_python_package
 
-  publish:
+  publish_on_pypi:
     name: Publish on PyPi
     permissions:
       id-token: write
     uses: superbox-dev/python-package-workflows/.github/workflows/publish-pypi.yml@main
     needs:
-      - build_python_package
+      - release
