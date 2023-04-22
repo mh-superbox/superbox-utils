@@ -5,13 +5,15 @@ on:
 
 jobs:
   parameters:
+    name: Parameters
     uses: ./.github/workflows/parameters.yml
     with:
       python-version: '3.8 3.9 3.10 3.11'
 
   unit-testing:
+    name: Unit testing
     uses: ./.github/workflows/unit-testing.yml
     needs:
       - parameters
     with:
-      python-version: ${{ needs.parameters.outputs.python-version }}
+      python-version: ${{ needs.parameters.outputs.params.python-version }}
