@@ -46,9 +46,9 @@ jobs:
           if len('${{ github.ref_name }}'.split(' ')) > 2:
             version_dev = True
 
-          package_name = subprocess.run("python setup.py --name", shell=True, capture_output=True).stdout.decode()
+          package_name = subprocess.run("python setup.py --name", shell=True, capture_output=True).stdout.decode().strip()
           package_alternate_name = package_name.replace("-", "_")
-          package_version = subprocess.run("python setup.py --version", shell=True, capture_output=True).stdout.decode()
+          package_version = subprocess.run("python setup.py --version", shell=True, capture_output=True).stdout.decode().strip()
 
           if not version_dev:
             package_version += ".dev${{ github.run_number }}"
