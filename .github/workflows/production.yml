@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: write
-  id-token: write
 
 jobs:
   tests:
@@ -22,6 +21,8 @@ jobs:
 
   release:
     name: Release
+    permissions:
+      id-token: write
     uses: superbox-dev/python-package-workflows/.github/workflows/release.yml@main
     needs:
       - build_python_package
