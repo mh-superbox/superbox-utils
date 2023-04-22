@@ -2,7 +2,10 @@ name: Unit testing
 
 on:
   workflow_call:
-
+    inputs:
+      latest-python-version:
+        required: true
+        type: string
 jobs:
   coverage:
     name: Coverage
