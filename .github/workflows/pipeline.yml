@@ -20,5 +20,5 @@ jobs:
 
   coverage:
     uses: ./.github/workflows/coverage.yml
-  needs:
-    - unit-testing
+    needs:
+      - unit-testing
