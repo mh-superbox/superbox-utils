@@ -10,7 +10,7 @@ on:
     outputs:
       params:
         description: Parameters to be used in other jobs.
-        value: ${{ jobs.set-up-parameters.outputs.params }}
+        value: ${{ fromJson(jobs.set-up-parameters.outputs.params) }}
 
 jobs:
   set-up-parameters:

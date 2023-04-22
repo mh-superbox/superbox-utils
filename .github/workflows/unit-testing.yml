@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: test
         run: |
-          echo "${{ inputs.python-version }}"
+          echo "${{ fromJson(inputs) }}"
 
     #strategy:
     #  fail-fast: false
