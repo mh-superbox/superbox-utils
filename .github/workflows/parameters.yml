@@ -23,6 +23,9 @@ jobs:
       latest-python-version: ${{ steps.params.outputs.latest-python-version }}
 
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
       - name: Test
         run: |
           echo "${{ github.ref }}"
