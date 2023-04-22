@@ -5,7 +5,7 @@ on:
     inputs:
       python-version:
         required: True
-        default: '3.8 3.9 3.10 3.11'
+        default: 3.8 3.9 3.10 3.11
         type: string
     outputs:
       python-version:
@@ -34,6 +34,6 @@ jobs:
           with open(environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as gho:
               gho.write(f"python-version={python_version!s}\n")
               gho.write(f"latest-python-version={latest_python_version!s}\n")
-          
+
           print("Python version:", python_version)
           print("Latest python version:", latest_python_version)
