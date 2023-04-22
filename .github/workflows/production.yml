@@ -20,4 +20,4 @@ jobs:
     name: Release
     uses: superbox-dev/python-package-workflows/.github/workflows/release.yml@main
     needs:
-      - build
+      - build_python_package
