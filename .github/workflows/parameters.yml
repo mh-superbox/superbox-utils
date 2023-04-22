@@ -29,7 +29,7 @@ jobs:
 
           python_version = '${{ inputs.python-version }}'.split(' ')
           python_version.sort()
-          latest_python_version = python_version[-1]
+          latest_python_version = python_version[0]
 
           with open(environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as gho:
               gho.write(f"python-version={python_version!s}\n")
