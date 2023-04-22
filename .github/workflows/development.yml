@@ -10,6 +10,6 @@ jobs:
 
   build_python_package:
     name: Build python package
-    uses: superbox-dev/python-package-workflows/.github/workflows/build-python-package.yml@main
     needs:
       - tests
+    uses: superbox-dev/python-package-workflows/.github/workflows/build-python-package.yml@main

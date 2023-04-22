@@ -24,8 +24,8 @@ jobs:
 
   publish_on_pypi:
     name: Publish on PyPi
+    needs:
+      - release
     permissions:
       id-token: write
     uses: superbox-dev/python-package-workflows/.github/workflows/publish-pypi.yml@main
-    needs:
-      - release
