@@ -26,6 +26,7 @@ jobs:
         shell: python
         run: |
           from os import environ
+          from pathlib import Path
 
           python_version = '${{ inputs.python-version }}'.split(' ')
           latest_python_version = python_version[-1]
@@ -36,3 +37,4 @@ jobs:
 
           print("Python version:", python_version)
           print("Latest python version:", latest_python_version)
+          print(Path(environ['GITHUB_OUTPUT']).read_text())          
