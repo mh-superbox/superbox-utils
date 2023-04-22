@@ -21,16 +21,10 @@ jobs:
         with:
           name: python-package
 
-      - name: test
-        run: |
-          ls -la .
-          ls -la python-package
-
       - name: Release files
         uses: softprops/action-gh-release@v1
         with:
           name: ${{ inputs.package-name }}-${{ inputs.package-version }}
           # yamllint disable rule:line-length
-          files: |
-            **/python-package/*
+          files: *
           # yamllint enable rule:line-length

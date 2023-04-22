@@ -9,7 +9,7 @@ on:
 
 jobs:
   security:
-    name: Security
+    name: Audit packages
     runs-on: ubuntu-latest
     continue-on-error: True
 
