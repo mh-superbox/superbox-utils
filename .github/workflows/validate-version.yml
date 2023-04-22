@@ -6,9 +6,6 @@ on:
       latest-python-version:
         required: True
         type: string
-      package-version:
-        required: True
-        type: string
 
 jobs:
   validate-version:
@@ -27,9 +24,10 @@ jobs:
       - name: Check tag ${{ github.ref_name }}
         run: |
           ref_name="${{ github.ref_name }}"
-          tag_version="${ref_name/.dev/}"
+          tag_version="${ref_name/.dev/}"          
+          package_version="$(python setup.py --version)"
 
-          if [ "${tag_version}" != "${{ inputs.package-version }}" ]; then
-            echo "Version number in package does not match tag! (${tag_version} vs. ${{ inputs.package-version }})."
+          if [ "${tag_version}" != "${package_version}" ]; then
+            echo "Version number in package does not match tag! (${tag_version} vs. ${package_version})."
             exit 1
           fi
