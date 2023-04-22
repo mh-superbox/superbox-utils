@@ -22,6 +22,7 @@ jobs:
     name: Coverage
     uses: ./.github/workflows/coverage.yml
     needs:
+      - parameters
       - unit-testing
     with:
       latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
@@ -33,3 +34,11 @@ jobs:
       - parameters
     with:
       python-version: ${{ needs.parameters.outputs.python-version }}
+
+  security:
+    name: Security
+    uses: ./.github/workflows/security.yml
+    needs:
+      - parameters
+    with:
+      latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
