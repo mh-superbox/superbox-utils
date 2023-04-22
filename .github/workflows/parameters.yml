@@ -23,9 +23,8 @@ jobs:
         shell: python
         run: |
           from os import environ
-          import json
 
-          python_version = json.dumps('${{ inputs.python-version }}'.split(' '))
+          python_version = '${{ inputs.python-version }}'.split(' ')
 
           with open(environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as gho:
               gho.write(f"python-version={python_version!s}\n")
