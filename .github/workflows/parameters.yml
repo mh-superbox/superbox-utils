@@ -30,4 +30,4 @@ jobs:
           with open(environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as gho:
               gho.write(f"python-version={python_version!s}\n")
           
-          print("Python version:", <python_version>)
+          print("Python version:", python_version)
