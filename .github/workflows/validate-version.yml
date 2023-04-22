@@ -24,7 +24,7 @@ jobs:
       - name: Check tag ${{ github.ref_name }}
         run: |
           ref_name="${{ github.ref_name }}"
-          tag_version="${ref_name/.dev/}"          
+          tag_version="${ref_name/.dev/}"
           package_version="$(python setup.py --version)"
 
           if [ "${tag_version}" != "${package_version}" ]; then
