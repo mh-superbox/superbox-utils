@@ -12,6 +12,12 @@ on:
         value: ${{ jobs.set-up-parameters.outputs.python-version }}
       latest-python-version:
         value: ${{ jobs.set-up-parameters.outputs.latest-python-version }}
+      package-name:
+        value: ${{ jobs.set-up-parameters.outputs.package-name}}
+      package-alternate-name:
+        value: ${{ jobs.set-up-parameters.outputs.package-alternate-name }}
+      package-version:
+        value: ${{ jobs.set-up-parameters.outputs.package-version }}
 
 jobs:
   set-up-parameters:
@@ -21,6 +27,9 @@ jobs:
     outputs:
       python-version: ${{ steps.params.outputs.python-version }}
       latest-python-version: ${{ steps.params.outputs.latest-python-version }}
+      package-name: ${{ steps.params.outputs.package-name }}
+      package-alternate-name: ${{ steps.params.outputs.package-alternate-name }}
+      package-version: ${{ steps.params.outputs.package-version }}
 
     steps:
       - name: Check out repository

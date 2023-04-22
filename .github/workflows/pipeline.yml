@@ -46,3 +46,14 @@ jobs:
       - parameters
     with:
       latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
+
+  build-python-package:
+    name: Build python package
+    uses: ./.github/workflows/build-python-package.yml
+    needs:
+      - parameters
+    with:
+      latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
+      package-name: ${{ needs.parameters.outputs.package-name }}
+      package-alternate-name: ${{ needs.parameters.outputs.package-alternate-name }}
+      package-version: ${{ needs.parameters.outputs.package-version }}
