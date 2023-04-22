@@ -49,7 +49,7 @@ jobs:
 
   build:
     name: Build
-    uses: ./.github/workflows/build-python-package.yml
+    uses: ./.github/workflows/build.yml
     needs:
       - parameters
       - unit-testing
@@ -58,4 +58,14 @@ jobs:
       latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
       package-name: ${{ needs.parameters.outputs.package-name }}
       package-alternate-name: ${{ needs.parameters.outputs.package-alternate-name }}
+      package-version: ${{ needs.parameters.outputs.package-version }}
+
+  release:
+    name: Release
+    uses: ./.github/workflows/release.yml
+    needs:
+      - parameters
+      - build
+    with:
+      package-name: ${{ needs.parameters.outputs.package-name }}
       package-version: ${{ needs.parameters.outputs.package-version }}
