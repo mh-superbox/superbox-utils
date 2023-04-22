@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       python-version:
-        required: true
+        required: True
         type: string
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
+      fail-fast: False
       matrix:
         python-version: ${{ fromJson(inputs.python-version) }}
 
