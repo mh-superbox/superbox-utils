@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: False
+      fail-fast: false
       matrix:
         python-version: ${{ fromJson(inputs.python-version) }}
 

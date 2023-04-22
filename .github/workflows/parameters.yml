@@ -21,6 +21,10 @@ jobs:
       python-version: ${{ steps.params.outputs.python-version }}
       latest-python-version: ${{ steps.params.outputs.latest-python-version }}
     steps:
+      - name: Test
+        run: |
+          echo "${{ github.ref }}"
+          echo "${{ github.ref_type }}"
       - name: Generate 'params'
         id: params
         shell: python
