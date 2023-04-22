@@ -37,3 +37,4 @@ jobs:
 
           print("Python version:", python_version)
           print("Latest python version:", latest_python_version)
+          print(environ['GITHUB_OUTPUT'])
