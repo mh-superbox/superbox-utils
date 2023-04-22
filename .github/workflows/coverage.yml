@@ -1,4 +1,4 @@
-name: Unit testing
+name: Coverage
 
 on:
   workflow_call:
@@ -7,8 +7,8 @@ on:
         required: true
         type: string
 jobs:
-  coverage:
-    name: Coverage
+  generate-coverage-badge:
+    name: Generate coverage badge
     runs-on: ubuntu-latest
 
     steps:
@@ -19,10 +19,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: coverage-python-${{ needs.config.outputs.latest-python-version }}
-
-      - name: test
-        run: |
-          ls -la .
 
       - name: Create coverage badge
         uses: tj-actions/coverage-badge-py@v2

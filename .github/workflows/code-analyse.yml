@@ -1,4 +1,4 @@
-name: Unit testing
+name: Code analyse
 
 on:
   workflow_call:
@@ -8,8 +8,8 @@ on:
         type: string
 
 jobs:
-  unit-testing:
-    name: Unit tests using Python ${{ matrix.python-version }}
+  code-analyse:
+    name: Code analyse using Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
 
     strategy:
@@ -41,23 +41,25 @@ jobs:
             -r requirements-dev.txt
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
 
-      - name: Run unit tests
+      - name: Check code format with black
         run: |
-          pytest \
-            --cov=src \
-            --cov-report=term-missing \
-            --junitxml=junit/test-results.xml \
-            --cov-report=xml
+          black --version
+          black --diff --check $(git ls-files '*.py')
 
-      - name: Upload coverage
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-python-${{ matrix.python-version }}
-          path: .coverage
+      - name: Lint with flake8
+        run: |
+          flake8 --version
+          flake8 --show-source --statistics $(git ls-files '*.py')
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results-python-${{ matrix.python-version }}
-          path: junit/test-results.xml
-          if-no-files-found: error
+      - name: Lint with mypy
+        run: mypy $(git ls-files '*.py')
+
+      - name: Lint with pylint
+        run: |
+          pylint --version
+          pylint $(git ls-files '*.py')
+
+      - name: Lint with yamllint
+        run: |
+          yamllint --version
+          yamllint $(git ls-files '*.yaml') $(git ls-files '*.yml')
