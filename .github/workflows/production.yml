@@ -5,6 +5,10 @@ on:
     tags:
       - '*'
 
+permissions:
+  contents: write
+  id-token: write
+
 jobs:
   tests:
     name: Tests
@@ -18,9 +22,6 @@ jobs:
 
   release:
     name: Release
-    permissions:
-      contents: write
-      id-token: write
     uses: superbox-dev/python-package-workflows/.github/workflows/release.yml@main
     needs:
       - build_python_package
