@@ -72,8 +72,6 @@ jobs:
       - code-analyse
     with:
       latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
-      package-name: ${{ needs.parameters.outputs.package-name }}
-      package-alternate-name: ${{ needs.parameters.outputs.package-alternate-name }}
       package-version: ${{ needs.parameters.outputs.package-version }}
 
   release:
