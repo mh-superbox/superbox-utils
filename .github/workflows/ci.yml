@@ -48,10 +48,10 @@ jobs:
       package-name: ${{ needs.parameters.outputs.package-name }}
       package-version: ${{ needs.parameters.outputs.package-version }}
 
-  publish:
-    name: Publish
-    needs:
-      - release
-    uses: superbox-dev/python-package-workflows/.github/workflows/publish.yml@main
-    secrets:
-      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+  #publish:
+  # name: Publish
+  #  needs:
+  #    - release
+  #  uses: superbox-dev/python-package-workflows/.github/workflows/publish.yml@main
+  #  secrets:
+  #    PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
