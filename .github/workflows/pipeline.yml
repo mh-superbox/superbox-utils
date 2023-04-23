@@ -17,7 +17,7 @@ jobs:
   validate:
     name: Validate
     if: |
-      contains(fromJSON('["tag", "branch"]'), github.ref_type) 
+      contains(fromJSON('["tag", "branch"]'), github.ref_type)
       && github.ref_name != 'main'
     uses: ./.github/workflows/validate-version.yml
     needs:
