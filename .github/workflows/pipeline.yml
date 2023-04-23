@@ -19,6 +19,7 @@ jobs:
     if: |
       contains(fromJSON('["tag", "branch"]'), github.ref_type)
       && github.ref_name != 'main'
+      && !endsWith(github.ref_name, '/merge')
     uses: ./.github/workflows/validate-version.yml
     needs:
       - parameters
