@@ -12,52 +12,16 @@ jobs:
     name: Parameters
     uses: superbox-dev/python-package-workflows/.github/workflows/parameters.yml@main
     with:
-      python-version: 3.8 3.9 3.10 3.11
+      json: ./.github/workflows/parameters.json
 
-  validate:
-    name: Validate
-    if: |
-      contains(fromJSON('["tag", "branch"]'), github.ref_type)
-      && github.ref_name != 'main'
-      && !endsWith(github.ref_name, '/merge')
-    uses: superbox-dev/python-package-workflows/.github/workflows/validate-version.yml@main
+  tests:
+    name: Tests
+    uses: ./.github/workflows/tests.yml
     needs:
       - parameters
     with:
       latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
-
-  unit-testing:
-    name: Unit testing
-    uses: superbox-dev/python-package-workflows/.github/workflows/unit-testing.yml@main
-    needs:
-      - parameters
-    with:
-      python-version: ${{ needs.parameters.outputs.python-version }}
-
-  coverage:
-    name: Coverage
-    uses: superbox-dev/python-package-workflows/.github/workflows/coverage.yml@main
-    needs:
-      - parameters
-      - unit-testing
-    with:
-      latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
-
-  code-analyse:
-    name: Code analyse
-    uses: superbox-dev/python-package-workflows/.github/workflows/code-analyse.yml@main
-    needs:
-      - parameters
-    with:
-      python-version: ${{ needs.parameters.outputs.python-version }}
-
-  security:
-    name: Security
-    uses: superbox-dev/python-package-workflows/.github/workflows/security.yml@main
-    needs:
-      - parameters
-    with:
-      latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
+      python-versions: ${{ needs.parameters.outputs.python-versions }}
 
   build:
     name: Build
@@ -65,15 +29,12 @@ jobs:
       contains(fromJSON('["tag", "branch"]'), github.ref_type)
       && github.ref_name != 'main'
       && !endsWith(github.ref_name, '/merge')
-    uses: superbox-dev/python-package-workflows/.github/workflows/build.yml@main
+    uses: superbox-dev/python-package-workflows/.github/workflows/build-python-package.yml@main
     needs:
       - parameters
-      - unit-testing
-      - code-analyse
+      - tests
     with:
       latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
-      package-name: ${{ needs.parameters.outputs.package-name }}
-      package-alternate-name: ${{ needs.parameters.outputs.package-alternate-name }}
       package-version: ${{ needs.parameters.outputs.package-version }}
 
   release:
@@ -82,7 +43,6 @@ jobs:
     uses: superbox-dev/python-package-workflows/.github/workflows/release.yml@main
     needs:
       - parameters
-      - validate
       - build
     with:
       package-name: ${{ needs.parameters.outputs.package-name }}
