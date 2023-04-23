@@ -55,7 +55,7 @@ jobs:
           latest_python_version = python_version[-1]
           version_dev = False
 
-          if re.match(r"\d{4}\.\d{1,2}\.dev.*", "${{ github.ref_name }}")
+          if re.match(r"\d{4}\.\d{1,2}\.dev.*", "${{ github.ref_name }}"):
             version_dev = True
 
           result_package_name = subprocess.run("python setup.py --name", shell=True, capture_output=True)
