@@ -24,7 +24,7 @@ jobs:
       - name: Release files
         uses: softprops/action-gh-release@v1
         with:
-          name: ${{ inputs.package-name }}-${{ inputs.package-version }}
+          name: ${{ inputs.package-name }} ${{ inputs.package-version }}
           # yamllint disable rule:line-length
           files: |
             *
