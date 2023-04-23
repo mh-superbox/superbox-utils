@@ -10,7 +10,7 @@ on:
 jobs:
   parameters:
     name: Parameters
-    uses: ./.github/workflows/parameters.yml
+    uses: superbox-dev/python-package-workflows/.github/workflows/parameters.yml@main
     with:
       python-version: 3.8 3.9 3.10 3.11
 
@@ -20,7 +20,7 @@ jobs:
       contains(fromJSON('["tag", "branch"]'), github.ref_type)
       && github.ref_name != 'main'
       && !endsWith(github.ref_name, '/merge')
-    uses: ./.github/workflows/validate-version.yml
+    uses: superbox-dev/python-package-workflows/.github/workflows/validate-version.yml@main
     needs:
       - parameters
     with:
@@ -28,7 +28,7 @@ jobs:
 
   unit-testing:
     name: Unit testing
-    uses: ./.github/workflows/unit-testing.yml
+    uses: superbox-dev/python-package-workflows/.github/workflows/unit-testing.yml@main
     needs:
       - parameters
     with:
@@ -36,7 +36,7 @@ jobs:
 
   coverage:
     name: Coverage
-    uses: ./.github/workflows/coverage.yml
+    uses: superbox-dev/python-package-workflows/.github/workflows/coverage.yml@main
     needs:
       - parameters
       - unit-testing
@@ -45,7 +45,7 @@ jobs:
 
   code-analyse:
     name: Code analyse
-    uses: ./.github/workflows/code-analyse.yml
+    uses: superbox-dev/python-package-workflows/.github/workflows/code-analyse.yml@main
     needs:
       - parameters
     with:
@@ -53,7 +53,7 @@ jobs:
 
   security:
     name: Security
-    uses: ./.github/workflows/security.yml
+    uses: superbox-dev/python-package-workflows/.github/workflows/security.yml@main
     needs:
       - parameters
     with:
@@ -65,7 +65,7 @@ jobs:
       contains(fromJSON('["tag", "branch"]'), github.ref_type)
       && github.ref_name != 'main'
       && !endsWith(github.ref_name, '/merge')
-    uses: ./.github/workflows/build.yml
+    uses: superbox-dev/python-package-workflows/.github/workflows/build.yml@main
     needs:
       - parameters
       - unit-testing
@@ -79,7 +79,7 @@ jobs:
   release:
     name: Release
     if: github.ref_type == 'tag'
-    uses: ./.github/workflows/release.yml
+    uses: superbox-dev/python-package-workflows/.github/workflows/release.yml@main
     needs:
       - parameters
       - validate
