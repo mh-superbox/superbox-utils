@@ -21,12 +21,16 @@ jobs:
       && github.ref_name != 'main'
       && !endsWith(github.ref_name, '/merge')
     uses: superbox-dev/python-package-workflows/.github/workflows/validate-version.yml@main
+    needs:
+      - parameters
     with:
       latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
 
   unit-testing:
     name: Unit testing
     uses: superbox-dev/python-package-workflows/.github/workflows/unit-testing.yml@main
+    needs:
+      - parameters
     with:
       python-versions: ${{ needs.parameters.outputs.python-versions }}
 
@@ -34,6 +38,7 @@ jobs:
     name: Coverage
     uses: superbox-dev/python-package-workflows/.github/workflows/coverage.yml@main
     needs:
+      - parameters
       - unit-testing
     with:
       latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
@@ -41,12 +46,16 @@ jobs:
   code-analyse:
     name: Code analyse
     uses: superbox-dev/python-package-workflows/.github/workflows/code-analyse.yml@main
+    needs:
+      - parameters
     with:
       python-versions: ${{ needs.parameters.outputs.python-versions }}
 
   security:
     name: Security
     uses: superbox-dev/python-package-workflows/.github/workflows/security.yml@main
+    needs:
+      - parameters
     with:
       latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
 
