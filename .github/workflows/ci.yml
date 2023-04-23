@@ -65,7 +65,7 @@ jobs:
       contains(fromJSON('["tag", "branch"]'), github.ref_type)
       && github.ref_name != 'main'
       && !endsWith(github.ref_name, '/merge')
-    uses: superbox-dev/python-package-workflows/.github/workflows/build.yml@main
+    uses: superbox-dev/python-package-workflows/.github/workflows/build-python-package.yml@main
     needs:
       - parameters
       - unit-testing
