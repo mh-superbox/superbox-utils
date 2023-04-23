@@ -14,7 +14,6 @@ jobs:
   release-on-github:
     name: Release on GitHub
     runs-on: ubuntu-latest
-    if: github.ref_type == 'tag'
     steps:
       - name: Download package files
         uses: actions/download-artifact@v3
@@ -24,7 +23,7 @@ jobs:
       - name: Release files
         uses: softprops/action-gh-release@v1
         with:
-          name: ${{ inputs.package-name }} ${{ inputs.package-version }}
+          name: ${{ inputs.package-version }}
           # yamllint disable rule:line-length
           files: |
             *
