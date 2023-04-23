@@ -6,7 +6,7 @@ on:
       latest-python-version:
         required: True
         type: string
-      python-version:
+      python-versions:
         required: True
         type: string
 
@@ -25,7 +25,7 @@ jobs:
     name: Unit testing
     uses: superbox-dev/python-package-workflows/.github/workflows/unit-testing.yml@main
     with:
-      python-version: ${{ inputs.python-version }}
+      python-versions: ${{ inputs.python-versions }}
 
   coverage:
     name: Coverage
@@ -39,7 +39,7 @@ jobs:
     name: Code analyse
     uses: superbox-dev/python-package-workflows/.github/workflows/code-analyse.yml@main
     with:
-      python-version: ${{ inputs.python-version }}
+      python-versions: ${{ inputs.python-versions }}
 
   security:
     name: Security

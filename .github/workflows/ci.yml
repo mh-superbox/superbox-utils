@@ -21,7 +21,7 @@ jobs:
       - parameters
     with:
       latest-python-version: ${{ needs.parameters.outputs.latest-python-version }}
-      python-version: ${{ needs.parameters.outputs.python-version }}
+      python-versions: ${{ needs.parameters.outputs.python-versions }}
 
   build:
     name: Build
