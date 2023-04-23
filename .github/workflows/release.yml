@@ -14,8 +14,9 @@ jobs:
   release-on-github:
     name: Release on GitHub
     runs-on: ubuntu-latest
-    if: github.ref_type == 'tag'
-
+    if: |
+      contains(fromJSON('["tag", "branch"]'), github.ref_type) 
+      && github.ref_name != 'main'
     steps:
       - name: Download package files
         uses: actions/download-artifact@v3

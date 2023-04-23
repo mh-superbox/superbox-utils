@@ -3,6 +3,9 @@ name: Pipeline
 on:
   workflow_dispatch:
   pull_request:
+  push:
+    tags:
+      - '*'
 
 jobs:
   parameters:
@@ -13,6 +16,7 @@ jobs:
 
   validate:
     name: Validate
+    if: github.ref_type == 'brand' &&
     uses: ./.github/workflows/validate-version.yml
     needs:
       - parameters
